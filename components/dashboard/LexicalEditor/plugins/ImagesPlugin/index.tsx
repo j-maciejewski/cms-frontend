@@ -1,6 +1,7 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { $wrapNodeInElement, mergeRegister } from '@lexical/utils'
 import {
+  $createParagraphNode,
   $createRangeSelection,
   $getSelection,
   $insertNodes,
@@ -10,23 +11,22 @@ import {
   COMMAND_PRIORITY_EDITOR,
   COMMAND_PRIORITY_HIGH,
   COMMAND_PRIORITY_LOW,
-  createCommand,
   DRAGOVER_COMMAND,
   DRAGSTART_COMMAND,
   DROP_COMMAND,
   LexicalCommand,
   LexicalEditor,
-  $createParagraphNode,
+  createCommand,
 } from 'lexical'
 import { useEffect, useRef, useState } from 'react'
 
-import { CAN_USE_DOM } from '../../utils/canUseDOM'
 import { $createImageNode, $isImageNode, ImageNode, ImagePayload, ImageSourcePayload } from '../../nodes/ImageNode'
 import Button from '../../ui/Button'
 import { DialogActions, DialogButtonsList } from '../../ui/Dialog'
 import FileInput from '../../ui/FileInput'
 import TextInput from '../../ui/TextInput'
 import addFile from '../../utils/addFile'
+import { CAN_USE_DOM } from '../../utils/canUseDOM'
 
 export type InsertImagePayload = Readonly<ImagePayload>
 export type ReplaceImageSourcePayload = Readonly<ImageSourcePayload>
@@ -332,9 +332,7 @@ function getDragSelection(event: DragEvent): Range | null | undefined {
       ? (target as Document).defaultView
       : (target as Element).ownerDocument.defaultView
   const domSelection = getDOMSelection(targetWindow)
-  if (document.caretRangeFromPoint) {
-    range = document.caretRangeFromPoint(event.clientX, event.clientY)
-  } else if (event.rangeParent && domSelection !== null) {
+  if (event.rangeParent && domSelection !== null) {
     domSelection.collapse(event.rangeParent, event.rangeOffset || 0)
     range = domSelection.getRangeAt(0)
   } else {

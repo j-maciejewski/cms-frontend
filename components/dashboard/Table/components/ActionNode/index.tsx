@@ -21,16 +21,14 @@ const Component = (props: HTMLProps<HTMLElement>) => {
   }
 }
 
-export const ActionNode = (props: IActionProps) => {
-  const { text, Icon, ...rest } = props
-
+export const ActionNode = ({ text, Icon, ...rest }: IActionProps) => {
   return (
     <Component
-      className="button px-4 py-2 text-sm font-medium text-center inline-flex items-center text-gray-500 dark:text-gray-400 bg-white rounded-lg  hover:text-gray-700 focus:z-10 dark:bg-gray-700 dark:hover:text-white dark:hover:bg-gray-700"
+      className="ml-auto inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-center text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-slate-800 dark:hover:text-white "
       {...rest}
     >
       {text}
-      {Icon && <Icon className="w-3 h-3 ml-3" />}
+      {Icon && <Icon className="ml-3 h-3 w-3" />}
     </Component>
   )
 }

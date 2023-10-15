@@ -22,18 +22,18 @@ export const ItemsPerPageSelect = ({ options }: { options: number[] }) => {
   const selectorWrapperRef = useOutsideClick<HTMLDivElement>(closeSelector)
 
   return (
-    <div ref={selectorWrapperRef} className="relative group">
+    <div ref={selectorWrapperRef} className="group relative">
       <button
         onClick={toggleSelector}
-        className="h-10 flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm text-center text-gray-500 hover:text-gray-700 bg-white rounded-lg hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-800 dark:text-white"
+        className="z-10 inline-flex h-10 flex-shrink-0 items-center rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-center text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none dark:border-gray-500 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-800"
         type="button"
       >
         {grid.limit ?? 10} per page
-        <ChevronIcon className="w-2.5 h-2.5 ml-2.5" />
+        <ChevronIcon className="ml-2.5 h-2.5 w-2.5" />
       </button>
       <div
         className={twMerge(
-          'z-10 absolute bottom-[115%] bg-white divide-y divide-gray-100 rounded-lg shadow w-full dark:bg-gray-700',
+          'absolute bottom-[115%] z-10 w-full divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700',
           !isSelectorOpen && 'hidden',
         )}
       >
@@ -42,7 +42,7 @@ export const ItemsPerPageSelect = ({ options }: { options: number[] }) => {
             <li key={idx}>
               <button
                 type="button"
-                className="no-border inline-flex w-full px-4 py-2 text-sm hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                className="inline-flex w-full px-4 py-2 text-sm hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                 onClick={onChangeItemsPerPage(value)}
               >
                 <div className="inline-flex items-center">{value} per page</div>

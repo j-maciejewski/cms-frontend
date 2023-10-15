@@ -5,32 +5,33 @@ import { calcPagination } from '@/utils'
 
 import { ItemsPerPageSelect } from '../ItemsPerPageSelect'
 
-const PaginationItem = (
-  {
-    text,
-    active,
-    disabled,
-    handleClick,
-  }: {
-    text: string
-    active?: boolean
-    disabled?: boolean
-    handleClick?: () => void
-  },
-) => {
+const PaginationItem = ({
+  text,
+  active,
+  disabled,
+  handleClick,
+}: {
+  text: string
+  active?: boolean
+  disabled?: boolean
+  handleClick?: () => void
+}) => {
   return (
     <li>
       <button
         className={twMerge(
-          'flex items-center justify-center px-3 h-10 min-w-[40px] leading-tight',
-          active
-            ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:bg-gray-800 dark:text-white'
-            : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white',
+          'flex h-10 min-w-[40px] items-center justify-center border border-gray-200 bg-white px-3 leading-tight dark:border-gray-500 dark:bg-gray-700',
+          active ? 'dark:bg-gray-800' : 'dark:bg-gray-700',
+          disabled && 'opacity-70 dark:text-gray-500',
+          active && 'opacity-70',
+          !disabled &&
+            !active &&
+            'text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white',
         )}
         disabled={active || disabled}
         onClick={handleClick}
       >
-        {disabled ? '...' : text}
+        {text}
       </button>
     </li>
   )
@@ -53,7 +54,7 @@ export const Pagination = ({ options }: { options: number[] }) => {
   }
 
   return (
-    <nav className="flex items-center justify-between pt-4 gap-3" aria-label="Table navigation">
+    <nav className="flex items-center justify-between gap-3 pt-4" aria-label="Table navigation">
       <span className="mr-auto text-sm font-normal text-gray-500 dark:text-gray-400">
         Showing{' '}
         <span className="font-semibold text-gray-900 dark:text-white">
@@ -63,17 +64,17 @@ export const Pagination = ({ options }: { options: number[] }) => {
       </span>
       {totalPages !== 1 && (
         <ul className="inline-flex -space-x-px text-sm [&>li:first-child_button]:rounded-l-lg [&>li:last-child_button]:rounded-r-lg">
-          {prev && <PaginationItem text="Previous" handleClick={onPageChange(prev)} />}
+          <PaginationItem text="Previous" handleClick={onPageChange(prev)} disabled={prev === null} />
           {items.map((page) => (
             <PaginationItem
               key={page}
-              text={String(page)}
+              text={page !== null ? String(page) : '...'}
               disabled={page === null}
               active={page === current}
               handleClick={onPageChange(page)}
             />
           ))}
-          {next && <PaginationItem text="Next" handleClick={onPageChange(next)} />}
+          <PaginationItem text="Next" handleClick={onPageChange(next)} disabled={next === null} />
         </ul>
       )}
       <ItemsPerPageSelect options={options} />

@@ -10,7 +10,7 @@ export const ToggleThemeButton = () => {
 
   return (
     <button
-      className="no-bg no-border p-2 rounded-lg hover:bg-gray-100 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700"
+      className="p-2 rounded-lg hover:bg-gray-100 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700"
       onClick={() => (currentTheme === 'dark' ? setTheme('light') : setTheme('dark'))}
     >
       {currentTheme === 'dark' ? <SunIcon className="w-5 fill-gray-200" /> : <MoonIcon className="w-5 fill-gray-400" />}

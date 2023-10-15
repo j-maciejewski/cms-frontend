@@ -6,6 +6,7 @@ export const CATEGORIES = gql`
   query dashboardCategories {
     categories {
       ...dashboardCategory
+      articlesCount
     }
   }
 

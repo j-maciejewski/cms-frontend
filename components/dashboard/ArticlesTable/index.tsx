@@ -4,15 +4,25 @@ import { useMemo, useState } from 'react'
 
 import { useArticles } from '@/app/(dashboard)/dashboard/articles/ArticlesProvider'
 import { PlusIcon } from '@/components/icons'
-import { DASHBOARD_ROUTES } from '@/consts/routes'
 
 import { Pagination } from '../Pagination'
 import { Table } from '../Table'
+import { ArticleForm } from './components/ArticleForm'
 import { dataRows } from './helpers'
 import { useColumns, useFilters } from './hooks'
 
 export const ArticlesTable = () => {
-  const { articles, searchText, handleChangeSearchText, filtersShown, setFiltersShown } = useArticles()
+  const {
+    articles,
+    refetchArticles,
+    searchText,
+    handleChangeSearchText,
+    filtersShown,
+    setFiltersShown,
+    formDialog,
+    setFormDialog,
+    formDialogRef,
+  } = useArticles()
   const filters = useFilters()
 
   const [columns, setColumns] = useState(useColumns())
@@ -30,13 +40,18 @@ export const ArticlesTable = () => {
         filters={filters}
         filtersShown={filtersShown}
         setFiltersShown={setFiltersShown}
+        handleRefetch={refetchArticles}
         mainActionNode={{
           text: 'Create article',
           Icon: PlusIcon,
-          href: DASHBOARD_ROUTES.CREATE_ARTICLE,
+          onClick: () => setFormDialog({ state: 'open' }),
         }}
       />
       <Pagination options={[10, 20, 50]} />
+
+      <dialog ref={formDialogRef} className="rounded-lg">
+        {formDialog.state === 'open' && <ArticleForm />}
+      </dialog>
     </>
   )
 }

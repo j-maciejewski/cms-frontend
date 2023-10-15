@@ -7,3 +7,11 @@ export enum UsersTableHeadersKeys {
   IS_SUSPENDED = 'isSuspended',
   IS_ANONYMOUS = 'isAnonymous',
 }
+
+export type UserFormDialogState =
+  | {
+      state: 'open'
+      userId?: string
+    }
+  | { state: 'loading' }
+  | { state: 'closed' }

@@ -2,7 +2,7 @@ const fetcher = async <T>(
   url: string,
   options?: RequestInit | undefined,
 ): Promise<{ data: T; error: null } | { data: null; error: Error }> => {
-  if (url.startsWith('/')) url = 'http://localhost:3001/api' + url
+  if (url.startsWith('/')) url = 'http://localhost:3000' + url
 
   return await fetch(url, options).then(async (response) => {
     try {

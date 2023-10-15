@@ -12,7 +12,8 @@ import {
   useRef,
   useState,
 } from 'react'
-import { createPortal } from 'react-dom'
+
+import { LE_ChevronDownIcon } from '../images/icons'
 
 type DropDownContextType = {
   registerItem: (ref: RefObject<HTMLButtonElement>) => void
@@ -22,19 +23,17 @@ const DropDownContext = createContext<DropDownContextType | null>(null)
 
 const dropDownPadding = 4
 
-export function DropDownItem(
-  {
-    children,
-    className,
-    onClick,
-    title,
-  }: {
-    children: ReactNode
-    className: string
-    onClick: (event: ReactMouseEvent<HTMLButtonElement>) => void
-    title?: string
-  },
-) {
+export function DropDownItem({
+  children,
+  className,
+  onClick,
+  title,
+}: {
+  children: ReactNode
+  className: string
+  onClick: (event: ReactMouseEvent<HTMLButtonElement>) => void
+  title?: string
+}) {
   const ref = useRef<HTMLButtonElement>(null)
 
   const dropDownContext = useContext(DropDownContext)
@@ -58,9 +57,15 @@ export function DropDownItem(
   )
 }
 
-function DropDownItems(
-  { children, dropDownRef, onClose }: { children: ReactNode; dropDownRef: Ref<HTMLDivElement>; onClose: () => void },
-) {
+function DropDownItems({
+  children,
+  dropDownRef,
+  onClose,
+}: {
+  children: ReactNode
+  dropDownRef: Ref<HTMLDivElement>
+  onClose: () => void
+}) {
   const [items, setItems] = useState<RefObject<HTMLButtonElement>[]>()
   const [highlightedItem, setHighlightedItem] = useState<RefObject<HTMLButtonElement>>()
 
@@ -122,25 +127,23 @@ function DropDownItems(
   )
 }
 
-export default function DropDown(
-  {
-    disabled = false,
-    buttonLabel,
-    buttonAriaLabel,
-    buttonClassName,
-    buttonIconClassName,
-    children,
-    stopCloseOnClickSelf,
-  }: {
-    disabled?: boolean
-    buttonAriaLabel?: string
-    buttonClassName: string
-    buttonIconClassName?: string
-    buttonLabel?: string
-    children: ReactNode
-    stopCloseOnClickSelf?: boolean
-  },
-): JSX.Element {
+export default function DropDown({
+  disabled = false,
+  buttonLabel,
+  buttonAriaLabel,
+  buttonClassName,
+  buttonIconClassName,
+  children,
+  stopCloseOnClickSelf,
+}: {
+  disabled?: boolean
+  buttonAriaLabel?: string
+  buttonClassName: string
+  buttonIconClassName?: string
+  buttonLabel?: string
+  children: ReactNode
+  stopCloseOnClickSelf?: boolean
+}): JSX.Element {
   const dropDownRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [showDropDown, setShowDropDown] = useState(false)
@@ -221,13 +224,11 @@ export default function DropDown(
         <i className="chevron-down" />
       </button>
 
-      {showDropDown &&
-        createPortal(
-          <DropDownItems dropDownRef={dropDownRef} onClose={handleClose}>
-            {children}
-          </DropDownItems>,
-          document.body,
-        )}
+      {showDropDown && (
+        <DropDownItems dropDownRef={dropDownRef} onClose={handleClose}>
+          {children}
+        </DropDownItems>
+      )}
     </>
   )
 }

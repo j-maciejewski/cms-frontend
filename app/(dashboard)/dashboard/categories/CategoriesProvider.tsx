@@ -1,9 +1,33 @@
 'use client'
 
-import { ChangeEvent, Dispatch, ReactNode, SetStateAction, createContext, useContext, useMemo, useState } from 'react'
+import { ApolloCache, DefaultContext, MutationTuple, useMutation } from '@apollo/client'
+import {
+  ChangeEvent,
+  Dispatch,
+  ReactNode,
+  RefObject,
+  SetStateAction,
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+} from 'react'
 
-import { CategoriesTableHeadersKeys } from '@/components/dashboard/CategoriesTable/consts'
-import { DashboardCategoryFragment } from '@/gql/graphql'
+import { CategoriesTableHeadersKeys, CategoryFormDialogState } from '@/components/dashboard/CategoriesTable/consts'
+import {
+  CreateCategoryInput,
+  CreateCategoryMutation,
+  CreateCategoryMutationVariables,
+  DashboardCategoryFragment,
+  DeleteCategoryMutation,
+  DeleteCategoryMutationVariables,
+  Exact,
+  UpdateCategoryInput,
+  UpdateCategoryMutation,
+  UpdateCategoryMutationVariables,
+} from '@/gql/graphql'
+import { useDialogForm } from '@/hooks'
+import { dashboardMutations } from '@/services'
 
 interface ICategoriesContext {
   categories: DashboardCategoryFragment[]
@@ -11,6 +35,34 @@ interface ICategoriesContext {
   handleChangeSearchText: (evt: ChangeEvent<HTMLInputElement>) => void
   filtersShown: boolean
   setFiltersShown: Dispatch<SetStateAction<boolean>>
+  createCategoryTuple: MutationTuple<
+    CreateCategoryMutation,
+    Exact<{
+      createCategoryInput: CreateCategoryInput
+    }>,
+    DefaultContext,
+    ApolloCache<any>
+  >
+  updateCategoryTuple: MutationTuple<
+    UpdateCategoryMutation,
+    Exact<{
+      id: string
+      updateCategoryInput: UpdateCategoryInput
+    }>,
+    DefaultContext,
+    ApolloCache<any>
+  >
+  deleteCategoryTuple: MutationTuple<
+    DeleteCategoryMutation,
+    Exact<{
+      id: string
+    }>,
+    DefaultContext,
+    ApolloCache<any>
+  >
+  formDialog: CategoryFormDialogState
+  setFormDialog: Dispatch<SetStateAction<CategoryFormDialogState>>
+  formDialogRef: RefObject<HTMLDialogElement>
 }
 
 interface ICategoriesProviderProps {
@@ -24,6 +76,8 @@ const CategoriesProvider = (props: ICategoriesProviderProps) => {
   const [searchText, setSearchText] = useState('')
   const handleChangeSearchText = (evt: ChangeEvent<HTMLInputElement>) => setSearchText(evt.target.value)
 
+  const { formDialogRef, formDialog, setFormDialog } = useDialogForm<CategoryFormDialogState>()
+
   const [filtersShown, setFiltersShown] = useState(false)
 
   const indexedColumns = [CategoriesTableHeadersKeys.NAME]
@@ -34,11 +88,35 @@ const CategoriesProvider = (props: ICategoriesProviderProps) => {
         return (category[column] as string).toLowerCase().includes(searchText.toLowerCase())
       }),
     )
-  }, [searchText, indexedColumns])
+  }, [searchText, indexedColumns, categories])
+
+  const createCategoryTuple = useMutation<CreateCategoryMutation, CreateCategoryMutationVariables>(
+    dashboardMutations.CREATE_CATEGORY,
+  )
+
+  const updateCategoryTuple = useMutation<UpdateCategoryMutation, UpdateCategoryMutationVariables>(
+    dashboardMutations.UPDATE_CATEGORY,
+  )
+
+  const deleteCategoryTuple = useMutation<DeleteCategoryMutation, DeleteCategoryMutationVariables>(
+    dashboardMutations.DELETE_CATEGORY,
+  )
 
   const value = useMemo(
-    () => ({ categories: filteredCategories, searchText, handleChangeSearchText, filtersShown, setFiltersShown }),
-    [categories, searchText, filtersShown],
+    () => ({
+      categories: filteredCategories,
+      searchText,
+      handleChangeSearchText,
+      filtersShown,
+      setFiltersShown,
+      createCategoryTuple,
+      updateCategoryTuple,
+      deleteCategoryTuple,
+      formDialog,
+      setFormDialog,
+      formDialogRef,
+    }),
+    [filteredCategories, searchText, filtersShown, formDialog],
   )
 
   return <CategoriesContext.Provider value={value} {...rest} />

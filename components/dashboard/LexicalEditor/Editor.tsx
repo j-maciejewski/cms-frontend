@@ -27,10 +27,7 @@ import { ILexicalEditor } from '.'
 // import { isEditorSaved } from '@/client/cache'
 import { useSettings } from './context/SettingsContext'
 import { useSharedHistoryContext } from './context/SharedHistoryContext'
-import TableCellNodes from './nodes/TableCellNodes'
 import AutoLinkPlugin from './plugins/AutoLinkPlugin'
-import CollapsiblePlugin from './plugins/CollapsiblePlugin'
-import ComponentPickerPlugin from './plugins/ComponentPickerPlugin'
 import ContextMenuPlugin from './plugins/ContextMenuPlugin'
 import DragDropPaste from './plugins/DragDropPastePlugin'
 import DraggableBlockPlugin from './plugins/DraggableBlockPlugin'
@@ -40,9 +37,6 @@ import LinkPlugin from './plugins/LinkPlugin'
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin'
 import { MaxLengthPlugin } from './plugins/MaxLengthPlugin'
 import TabFocusPlugin from './plugins/TabFocusPlugin'
-import TableCellActionMenuPlugin from './plugins/TableActionMenuPlugin'
-import TableOfContentsPlugin from './plugins/TableOfContentsPlugin'
-import { TablePlugin as NewTablePlugin } from './plugins/TablePlugin'
 import ToolbarPlugin from './plugins/ToolbarPlugin'
 import TreeViewPlugin from './plugins/TreeViewPlugin'
 import { EditorContainer, EditorScroller, Wrapper } from './styled'
@@ -85,15 +79,6 @@ export default function Editor(props: ILexicalEditor): JSX.Element {
     if (_floatingAnchorElem !== null) {
       setFloatingAnchorElem(_floatingAnchorElem)
     }
-  }
-
-  const cellEditorConfig = {
-    namespace: 'Playground',
-    nodes: [...TableCellNodes],
-    onError: (error: Error) => {
-      throw error
-    },
-    theme: PlaygroundEditorTheme,
   }
 
   useEffect(() => {
@@ -139,15 +124,15 @@ export default function Editor(props: ILexicalEditor): JSX.Element {
 
   const handleChange = () => {
     // isEditorSaved(false);
-    // editor.update(() => {
-    //   const editorState = editor.getEditorState();
-    //   const contentHtml = $generateHtmlFromNodes(editor);
-    //   currentContent.current = contentHtml;
-    //   if (autoSaveKey !== undefined) {
-    //     debouncedAutoSave(contentHtml);
-    //   }
-    //   if (onChange) onChange(editor, editorState);
-    // });
+    editor.update(() => {
+      const editorState = editor.getEditorState()
+      const contentHtml = $generateHtmlFromNodes(editor)
+      // currentContent.current = contentHtml;
+      // if (autoSaveKey !== undefined) {
+      //   debouncedAutoSave(contentHtml);
+      // }
+      if (onChange) onChange(editor)
+    })
   }
 
   useEffect(() => {
@@ -258,7 +243,6 @@ export default function Editor(props: ILexicalEditor): JSX.Element {
         <DragDropPaste />
         <AutoFocusPlugin />
         <ClearEditorPlugin />
-        <ComponentPickerPlugin />
         <HashtagPlugin />
         <AutoLinkPlugin />
         <OnChangePlugin onChange={handleChange} />
@@ -279,30 +263,16 @@ export default function Editor(props: ILexicalEditor): JSX.Element {
             <ListPlugin />
             <CheckListPlugin />
             <ListMaxIndentLevelPlugin maxDepth={3} />
-            <NewTablePlugin cellEditorConfig={cellEditorConfig}>
-              <AutoFocusPlugin />
-              <RichTextPlugin
-                contentEditable={<ContentEditable isEditing={isEditing} className="TableNode__contentEditable" />}
-                placeholder={null}
-                ErrorBoundary={LexicalErrorBoundary}
-              />
-              <HistoryPlugin />
-              <ImagesPlugin uploadImages={uploadImages} />
-              <LinkPlugin />
-              <LexicalClickableLinkPlugin />
-            </NewTablePlugin>
             <ImagesPlugin uploadImages={uploadImages} />
             {/* <InlineImagePlugin uploadImages={uploadImages} /> */}
             <LinkPlugin />
             {!isEditable && <LexicalClickableLinkPlugin />}
             <TabFocusPlugin />
             <TabIndentationPlugin />
-            <CollapsiblePlugin />
             {floatingAnchorElem && !isSmallWidthViewport && (
               <>
                 <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
                 <FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
-                <TableCellActionMenuPlugin anchorElem={floatingAnchorElem} cellMerge={true} />
               </>
             )}
           </>

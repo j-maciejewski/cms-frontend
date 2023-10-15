@@ -4,3 +4,11 @@ export enum ArticlesTableHeadersKeys {
   AUTHOR = 'author',
   CATEGORY = 'category',
 }
+
+export type ArticleFormDialogState =
+  | {
+      state: 'open'
+      articleId?: string
+    }
+  | { state: 'loading' }
+  | { state: 'closed' }

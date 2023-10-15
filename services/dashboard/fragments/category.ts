@@ -5,6 +5,5 @@ export const CATEGORY_FRAGMENT = gql`
     id
     name
     slug
-    articlesCount
   }
 `

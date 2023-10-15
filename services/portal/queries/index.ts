@@ -1,3 +1,5 @@
 export { GET_CATEGORIES } from './categories'
 export { GET_ARTICLE } from './article'
 export { GET_ARTICLES_BY_CATEGORY } from './articlesByCategory'
+export { GET_HOME_PAGE_ARTICLES } from './homePageArticles'
+export { GET_HIGHLIGHTED_ARTICLES } from './highlightedArticles'

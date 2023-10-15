@@ -1,20 +1,25 @@
 import { Carousel, CategoryPreview, SectionHeader } from '@/components/portal'
-import { Article, Category } from '@/types'
-import { fetcher } from '@/utils'
+import {
+  HighlightedArticlesQuery,
+  HighlightedArticlesQueryVariables,
+  HomePageArticlesQuery,
+  HomePageArticlesQueryVariables,
+} from '@/gql/graphql'
+import { getClient } from '@/lib/client'
+import { portalQueries } from '@/services'
 
 export default async function () {
-  const { data: highlightedArticlesData, error: highlightedArticlesError } = await fetcher<{ articles: Article[] }>(
-    `/articles/highlights`,
-    {
-      next: { revalidate: 10 },
-    },
-  )
-
-  const { data: articlesByCategoryData, error: articlesByCategoryError } = await fetcher<{
-    categories: (Category & { articles: Article[] })[]
-  }>(`/articles/each-category`, {
-    next: { revalidate: 10 },
+  const { data: highlightedArticlesData, error: highlightedArticlesError } = await getClient().query<
+    HighlightedArticlesQuery,
+    HighlightedArticlesQueryVariables
+  >({
+    query: portalQueries.GET_HIGHLIGHTED_ARTICLES,
   })
+
+  const { data: articlesByCategoryData, error: articlesByCategoryError } = await getClient().query<
+    HomePageArticlesQuery,
+    HomePageArticlesQueryVariables
+  >({ query: portalQueries.GET_HOME_PAGE_ARTICLES })
 
   if (highlightedArticlesError || articlesByCategoryError) {
     return (
@@ -29,15 +34,19 @@ export default async function () {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between gap-3 [&>*:not(:last-child)]:pb-3 [&>*:not(:last-child)]:border-b-2 [&>*:not(:last-child)]:border-sky-500">
-      <div>
-        <SectionHeader title="Highlights" className="mb-4" />
-        <Carousel articles={highlightedArticlesData?.articles} />
-      </div>
+    <div className="flex min-h-screen flex-col items-center justify-between gap-3 [&>*:not(:last-child)]:pb-3">
+      {highlightedArticlesData?.highlightedArticles && highlightedArticlesData.highlightedArticles.length > 0 && (
+        <div className="w-full">
+          <SectionHeader title="Highlights" className="mb-4" />
+          <Carousel articles={highlightedArticlesData?.highlightedArticles} />
+        </div>
+      )}
 
-      {articlesByCategoryData.categories.map(({ articles, ...category }) => (
-        <CategoryPreview key={category._id} category={category} articles={articles} />
-      ))}
+      {articlesByCategoryData.homePageArticles
+        .filter((category) => category.articles && category.articles.length > 0)
+        .map((category) => (
+          <CategoryPreview key={category.id} category={category} />
+        ))}
     </div>
   )
 }

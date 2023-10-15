@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { KeyIcon, UserAvatarIcon } from '@/components/icons'
 import { useLogin } from '@/context/LoginProvider'
 
-import { TextInput } from '../TextInput'
+import { TextInput } from '../FormElements/TextInput'
 
 const LoginFormSchema = z.object({
   email: z.string().min(1, { message: 'This field has to be filled.' }).email('This is not a valid email.'),
@@ -39,8 +39,6 @@ export const LoginForm = () => {
     }
 
     setErrors(null)
-
-    console.log('SEND')
   }
 
   return (
@@ -67,14 +65,14 @@ export const LoginForm = () => {
       </div>
       <button
         type="button"
-        className="w-full mb-3 bg-blue-500 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg"
+        className="mb-3 w-full rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
         onClick={handleLogin}
       >
         Log in
       </button>
-      <p className="text-xs text-center">
+      <p className="text-center text-xs">
         <span>Forgot your password?</span>
-        <button type="button" className="ml-2 text-blue-500 font-semibold" onClick={goToResetPasswordPage}>
+        <button type="button" className="ml-2 font-semibold text-blue-500" onClick={goToResetPasswordPage}>
           Reset password
         </button>
       </p>

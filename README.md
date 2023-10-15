@@ -5,3 +5,7 @@
 - Next
 - Apollo
 - Tailwind
+
+### How to build dev environment
+
+- docker-compose up --build

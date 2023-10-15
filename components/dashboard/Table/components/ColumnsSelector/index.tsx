@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
+import { ColumnsIcon } from '@/components/icons'
 import { useOutsideClick } from '@/hooks'
 
 import { ITableColumn } from '../../types'
@@ -19,16 +20,17 @@ export const ColumnsSelector = ({ columns, toggleColumn }: IColumnsSelector) => 
   const selectorWrapperRef = useOutsideClick<HTMLDivElement>(closeSelector)
 
   return (
-    <div ref={selectorWrapperRef} className="relative group">
+    <div ref={selectorWrapperRef} className="group relative">
       <button
         onClick={toggleSelector}
-        className="button px-4 py-2 text-sm font-medium text-center inline-flex items-center text-gray-500 dark:text-gray-400 bg-white rounded-lg hover:text-gray-700 dark:bg-gray-700 dark:hover:text-white dark:hover:bg-gray-700"
+        className="button inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-center text-sm font-medium text-gray-500 hover:text-gray-700 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-slate-800 dark:hover:text-white"
       >
         Columns
+        <ColumnsIcon className="ml-2 h-3 w-3" />
       </button>
       <div
         className={twMerge(
-          'z-10 absolute top-[115%] left-[50%] translate-x-[-50%] bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700',
+          'absolute left-[50%] top-[115%] z-10 translate-x-[-50%] divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700',
           !isSelectorOpen && 'hidden',
         )}
       >
@@ -39,7 +41,7 @@ export const ColumnsSelector = ({ columns, toggleColumn }: IColumnsSelector) => 
               <li key={idx} className="flex items-center px-3">
                 <input
                   type="checkbox"
-                  className="inline-flex mr-1 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="mr-1 inline-flex hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                   checked={!column.isHidden}
                   onChange={() => toggleColumn(column.key)}
                 />

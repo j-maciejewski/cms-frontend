@@ -9,12 +9,10 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen grid place-content-center">
-        <LoginProvider>
-          <div className="bg-white shadow-2xl p-5 rounded-lg min-w-[350px]">{children}</div>
-        </LoginProvider>
-      </body>
-    </html>
+    <body className="grid min-h-screen place-content-center">
+      <LoginProvider>
+        <div className="min-w-[350px] rounded-lg bg-white p-5 shadow-2xl">{children}</div>
+      </LoginProvider>
+    </body>
   )
 }

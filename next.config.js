@@ -1,12 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverActions: true,
+  },
+  output: 'standalone',
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'ocdn.eu',
-        port: '',
-        pathname: '**',
+        protocol: 'http',
+        hostname: '10.0.10.2',
+        port: '3001',
+        pathname: '/images/**',
       },
     ],
   },
@@ -17,15 +21,18 @@ const nextConfig = {
     })
     return config
   },
+  rewrites: () => {
+    return [
+      {
+        source: '/api',
+        destination: 'http://10.0.10.2:3001',
+      },
+      {
+        source: '/api/:path',
+        destination: 'http://10.0.10.2:3001/:path',
+      },
+    ]
+  },
 }
-
-// module: {
-//   rules: [
-//     {
-//       test: /\.svg/,
-//       type: 'asset/resource',
-//     },
-//   ],
-// },
 
 module.exports = nextConfig

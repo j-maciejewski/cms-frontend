@@ -1,4 +1,6 @@
 export { fetcher } from './fetcher'
 export * from './gridTools'
+export * from './dateTools'
 export { calcPagination } from './calcPagination'
 export { imageOnError } from './imageErrorHandler'
+export { generateSlug } from './generateSlug'

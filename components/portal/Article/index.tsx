@@ -1,15 +1,17 @@
-import { Article as TArticle } from '../../../types'
+import Image from 'next/image'
 import Link from 'next/link'
-import { ShareNodesIcon } from '../../icons'
+
+import { IMAGES_URL } from '@/consts'
 import { ArticleFragment } from '@/gql/graphql'
+import { formatDate } from '@/utils'
+
+import { ShareNodesIcon } from '../../icons'
 
 interface IArticle {
   article: ArticleFragment
 }
 
 export const Article = ({ article }: IArticle) => {
-  // const { categories } = useContext(CategoriesContext)
-
   // https://www.onet.pl/
 
   const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
@@ -22,23 +24,32 @@ export const Article = ({ article }: IArticle) => {
   return (
     <div>
       <div className="flex justify-between">
-        <Link href={`/${article.category?.slug}`}>
-          <span className="uppercase font-medium">{article.category?.name}</span>
+        <Link href={`/category/${article.category?.slug}`}>
+          <span className="font-semibold uppercase">{article.category?.name}</span>
         </Link>
         <div className="flex items-center">
-          <span className="text-[12px]">{new Date(article.createdAt).toLocaleDateString()}</span>
+          <span className="text-[12px]">{formatDate(article.updatedAt)}</span>
           <button className="ml-3">
             <ShareNodesIcon height={16} />
           </button>
         </div>
       </div>
       <div className="my-4">
-        <span className="text-[34px]/[68px] font-semibold bg-green2-light/80 box-decoration-clone p-2">
+        <span className="bg-primary/80 box-decoration-clone p-2 text-[32px]/[64px] font-semibold text-white">
           {article.title}
         </span>
       </div>
+      <div className="mb-4">
+        <Image
+          className="w-full object-cover"
+          width={600}
+          height={250}
+          alt={article?.title}
+          src={`${IMAGES_URL}/${article.leadImage}`}
+        />
+      </div>
       <div>
-        <img src={article.leadImage} alt={article.title} />
+        <div dangerouslySetInnerHTML={{ __html: article.content }} />
       </div>
       <div>
         <a href={facebookShareUrl} target="_blank">

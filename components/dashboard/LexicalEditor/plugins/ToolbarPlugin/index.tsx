@@ -17,7 +17,6 @@ import {
   $patchStyleText,
   $setBlocksType,
 } from '@lexical/selection'
-import { $isTableNode } from '@lexical/table'
 import {
   $findMatchingParent,
   $getNearestBlockElementAncestorOrThrow,
@@ -58,9 +57,7 @@ import DropdownColorPicker from '../../ui/DropdownColorPicker'
 import { IS_APPLE } from '../../utils/environment'
 import { getSelectedNode } from '../../utils/getSelectedNode'
 import { sanitizeUrl } from '../../utils/url'
-import { INSERT_COLLAPSIBLE_COMMAND } from '../CollapsiblePlugin'
 import { InsertImageDialog } from '../ImagesPlugin'
-import { InsertNewTableDialog } from '../TablePlugin'
 
 // import useIDBPlugin, { LOAD_CONTENT_COMMAND, SAVE_CONTENT_COMMAND } from '../IDBPlugin';
 
@@ -80,7 +77,6 @@ const blockTypeToBlockName = {
 
 const rootTypeToRootName = {
   root: 'Root',
-  table: 'Table',
 }
 
 const FONT_FAMILY_OPTIONS: [string, string][] = [
@@ -111,19 +107,17 @@ function dropDownActiveClass(active: boolean) {
   else return ''
 }
 
-function BlockFormatDropDown(
-  {
-    editor,
-    blockType,
-    rootType,
-    disabled = false,
-  }: {
-    blockType: keyof typeof blockTypeToBlockName
-    rootType: keyof typeof rootTypeToRootName
-    editor: LexicalEditor
-    disabled?: boolean
-  },
-): JSX.Element {
+function BlockFormatDropDown({
+  editor,
+  blockType,
+  rootType,
+  disabled = false,
+}: {
+  blockType: keyof typeof blockTypeToBlockName
+  rootType: keyof typeof rootTypeToRootName
+  editor: LexicalEditor
+  disabled?: boolean
+}): JSX.Element {
   const formatParagraph = () => {
     editor.update(() => {
       const selection = $getSelection()
@@ -224,22 +218,20 @@ function BlockFormatDropDown(
 }
 
 function Divider(): JSX.Element {
-  return <div className="divider" />
+  return <div className="mx-[4px] w-[1px] bg-gray-500" />
 }
 
-function FontDropDown(
-  {
-    editor,
-    value,
-    style,
-    disabled = false,
-  }: {
-    editor: LexicalEditor
-    value: string
-    style: string
-    disabled?: boolean
-  },
-): JSX.Element {
+function FontDropDown({
+  editor,
+  value,
+  style,
+  disabled = false,
+}: {
+  editor: LexicalEditor
+  value: string
+  style: string
+  disabled?: boolean
+}): JSX.Element {
   const handleClick = useCallback(
     (option: string) => {
       editor.update(() => {
@@ -339,12 +331,7 @@ export default function ToolbarPlugin(): JSX.Element {
         setIsLink(false)
       }
 
-      const tableNode = $findMatchingParent(node, $isTableNode)
-      if ($isTableNode(tableNode)) {
-        setRootType('table')
-      } else {
-        setRootType('root')
-      }
+      setRootType('root')
 
       if (elementDOM !== null) {
         setSelectedElementKey(elementKey)
@@ -667,26 +654,6 @@ export default function ToolbarPlugin(): JSX.Element {
           <i className="format image" />
         </button>
       )}
-      <button
-        onClick={() => {
-          showModal('Insert Table', (onClose) => <InsertNewTableDialog activeEditor={activeEditor} onClose={onClose} />)
-        }}
-        className="toolbar-item"
-        type="button"
-        title="Table"
-      >
-        <i className="format table" />
-      </button>
-      <button
-        onClick={() => {
-          editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined)
-        }}
-        className="toolbar-item"
-        title="Collapsible container"
-        type="button"
-      >
-        <i className="format caret-right" />
-      </button>
       <Divider />
       <DropDown
         disabled={!isEditable}
@@ -730,25 +697,6 @@ export default function ToolbarPlugin(): JSX.Element {
           <i className="icon justify-align" />
           <span className="text">Justify Align</span>
         </DropDownItem>
-        <Divider />
-        <DropDownItem
-          onClick={() => {
-            activeEditor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined)
-          }}
-          className="item"
-        >
-          <i className={'icon ' + (isRTL ? 'indent' : 'outdent')} />
-          <span className="text">Outdent</span>
-        </DropDownItem>
-        <DropDownItem
-          onClick={() => {
-            activeEditor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined)
-          }}
-          className="item"
-        >
-          <i className={'icon ' + (isRTL ? 'outdent' : 'indent')} />
-          <span className="text">Indent</span>
-        </DropDownItem>
       </DropDown>
       <Divider />
       <button
@@ -775,7 +723,6 @@ export default function ToolbarPlugin(): JSX.Element {
       >
         <i className="format redo" />
       </button>
-      <Divider />
       {/* <button
         className="toolbar-item"
         title="Load saved editor"

@@ -22,8 +22,6 @@ const RoutesProvider = (props: IRoutesProviderProps) => {
     setRoutes([
       { name: 'Home', path: '/' },
       ...categories.map((cat) => ({ name: cat.name, path: `/category/${cat.slug}` })),
-      { name: 'Contact', path: '/contact' },
-      { name: 'Create Article', path: '/create-article' },
     ])
   }, [categories])
 

@@ -1,3 +1,3 @@
 export default async function () {
-  return <>inbox</>
+  return <>inbox | TODO</>
 }

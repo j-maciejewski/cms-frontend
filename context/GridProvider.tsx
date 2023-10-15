@@ -49,7 +49,7 @@ const GridProvider = <GridInput,>(props: IGridProviderProps<GridInput>) => {
     }
   }, [grid])
 
-  const value = useMemo(() => ({ grid, totalItems, currentItems, handleChange }), [grid])
+  const value = useMemo(() => ({ grid, totalItems, currentItems, handleChange }), [grid, totalItems, currentItems])
 
   return <GridContext.Provider value={value} {...rest} />
 }

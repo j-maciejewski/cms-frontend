@@ -1,11 +1,13 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { z } from 'zod'
+
 import { UserAvatarIcon } from '@/components/icons'
 import { useLogin } from '@/context/LoginProvider'
-import { useRouter } from 'next/navigation'
-import { z } from 'zod'
-import { TextInput } from '../TextInput'
-import { useState } from 'react'
+
+import { TextInput } from '../FormElements/TextInput'
 
 const ResetPasswordFormSchema = z.object({
   email: z.string().min(1, { message: 'This field has to be filled.' }).email('This is not a valid email.'),
@@ -36,8 +38,6 @@ export const ResetPasswordForm = () => {
 
     setErrors(null)
     setEmailSent(true)
-
-    console.log('SEND')
   }
 
   return (
@@ -61,16 +61,16 @@ export const ResetPasswordForm = () => {
             />
           </div>
           <button
-            className="w-full mb-3 bg-blue-500 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg"
+            className="mb-3 w-full rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
             onClick={handleResetPassword}
           >
             Reset password
           </button>
         </>
       )}
-      <p className="text-xs text-center">
+      <p className="text-center text-xs">
         <span>Want to log in?</span>
-        <button className="ml-2 text-blue-500 font-semibold" onClick={goToLoginPage}>
+        <button className="ml-2 font-semibold text-blue-500" onClick={goToLoginPage}>
           Return
         </button>
       </p>

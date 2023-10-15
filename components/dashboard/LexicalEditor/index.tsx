@@ -9,12 +9,11 @@ import { SettingsContext } from './context/SettingsContext'
 import { SharedHistoryContext } from './context/SharedHistoryContext'
 import { ExtendedTextNode } from './nodes/ExtendedTextNode'
 import PlaygroundNodes from './nodes/PlaygroundNodes'
-import { TableContext } from './plugins/TablePlugin'
 import PlaygroundEditorTheme from './themes/PlaygroundEditorTheme'
 
 export interface ILexicalEditor {
   value?: string
-  onChange?: (lexicalEditor: TLexicalEditor, editorState: EditorState) => void
+  onChange?: (lexicalEditor: TLexicalEditor) => void
   isEditing?: boolean
   uploadImages?: boolean
   autoSaveKey?: string | null | undefined
@@ -64,21 +63,19 @@ export function LexicalEditor(props: ILexicalEditor): JSX.Element {
     <SettingsContext>
       <LexicalComposer initialConfig={initialConfig}>
         <SharedHistoryContext>
-          <TableContext>
-            <div className="editor-shell">
-              <Editor
-                value={value}
-                onChange={onChange}
-                isEditing={isEditing}
-                autoSaveKey={autoSaveKey}
-                uploadImages={uploadImages}
-                dataTestId={dataTestId}
-                initialValue={initialValue}
-                quoteContent={quoteContent}
-                isDisabled={isDisabled}
-              />
-            </div>
-          </TableContext>
+          <div className="editor-shell">
+            <Editor
+              value={value}
+              onChange={onChange}
+              isEditing={isEditing}
+              autoSaveKey={autoSaveKey}
+              uploadImages={uploadImages}
+              dataTestId={dataTestId}
+              initialValue={initialValue}
+              quoteContent={quoteContent}
+              isDisabled={isDisabled}
+            />
+          </div>
         </SharedHistoryContext>
       </LexicalComposer>
     </SettingsContext>

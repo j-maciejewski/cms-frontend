@@ -2,8 +2,11 @@ import { useQuery } from '@apollo/client'
 import Link from 'next/link'
 import { useMemo } from 'react'
 
+import { useArticles } from '@/app/(dashboard)/dashboard/articles/ArticlesProvider'
+import { PenIcon, TrashIcon } from '@/components/icons'
 import { DASHBOARD_ROUTES } from '@/consts/routes'
-import { DashboardCategoriesQuery, DashboardCategoriesQueryVariables } from '@/gql/graphql'
+import { useGrid } from '@/context/GridProvider'
+import { DashboardArticlesQuery, DashboardCategoriesQuery, DashboardCategoriesQueryVariables } from '@/gql/graphql'
 import { dashboardQueries } from '@/services'
 import { FilterOperators, FilterTypes } from '@/utils'
 
@@ -12,6 +15,25 @@ import { ArticlesTableHeadersKeys } from './consts'
 
 export const useColumns = () => {
   const { ID, TITLE, AUTHOR, CATEGORY } = ArticlesTableHeadersKeys
+  const {
+    refetchArticles,
+    setFormDialog,
+    deleteArticleTuple: [deleteArticle, { loading }],
+  } = useArticles()
+  const { grid } = useGrid()
+
+  const handleDelete = (id: string) => {
+    if (!window.confirm('Confirm deleting category')) return
+
+    deleteArticle({
+      variables: { id },
+      update: (cache, { data }) => {
+        if (!data?.deleteArticle) return
+
+        refetchArticles({ grid })
+      },
+    })
+  }
 
   const columns: ITableColumn[] = useMemo(
     () => [
@@ -21,7 +43,7 @@ export const useColumns = () => {
         dataIndex: TITLE,
         isTextIndexed: true,
         render: (title: string) => (
-          <p className="font-medium text-gray-800 whitespace-nowrap dark:text-white">{title}</p>
+          <p className="whitespace-nowrap font-medium text-gray-800 dark:text-white">{title}</p>
         ),
       },
       {
@@ -41,12 +63,23 @@ export const useColumns = () => {
         key: 'MANAGEMENT',
         dataIndex: ID,
         render: (id: string) => (
-          <Link
-            href={`${DASHBOARD_ROUTES.EDIT_ARTICLE}/${id}`}
-            className="font-medium px-2 py-1 rounded-lg text-blue-600 dark:text-blue-500"
-          >
-            Edit
-          </Link>
+          <div className="flex w-min gap-2">
+            <button
+              className="inline-flex items-center rounded-lg bg-blue-500 p-2 text-sm text-gray-300 hover:bg-blue-600"
+              onClick={() => setFormDialog({ state: 'open', articleId: id })}
+              title="Update category"
+            >
+              <PenIcon className="h-3 w-3" />
+            </button>
+            <button
+              className="inline-flex items-center rounded-lg bg-red-500 p-2 text-sm text-gray-300 hover:bg-red-600"
+              onClick={() => handleDelete(id)}
+              disabled={loading}
+              title="Delete category"
+            >
+              <TrashIcon className="h-3 w-3" />
+            </button>
+          </div>
         ),
       },
     ],

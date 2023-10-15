@@ -10,7 +10,7 @@ interface ISectionHeader extends CustomComponent {
 export const SectionHeader = ({ title, path, className }: ISectionHeader) => {
   return (
     <div className={twMerge('flex w-full', className)}>
-      <h6 className="border-l-4 border-green2-normal uppercase px-4 text-lg font-medium">
+      <h6 className="border-primary border-l-4 px-4 text-lg font-medium uppercase">
         {path ? (
           <a href={path} rel="noreferrer" target="_blank">
             {title}
@@ -19,7 +19,7 @@ export const SectionHeader = ({ title, path, className }: ISectionHeader) => {
           title
         )}
       </h6>
-      <div className="grow bg-green2-normal" />
+      <div className="bg-primary grow" />
     </div>
   )
 }

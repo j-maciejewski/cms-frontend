@@ -9,6 +9,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        'infinite-spin': {
+          '0%': { rotate: '0deg' },
+          '100%': { rotate: '360deg' },
+        },
+      },
+      animation: {
+        'infinite-spin': 'infinite-spin 2s linear infinite',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
@@ -17,16 +26,7 @@ module.exports = {
         '16/9': '56.25%',
       },
       colors: {
-        'cherry-red': {
-          light: '#ff394f',
-          normal: '#c60016',
-          dark: '#8e0010',
-        },
-        'off-white': '#eee2dc',
-        green2: {
-          light: '#a9b992',
-          normal: '#ad9780',
-        },
+        'primary': '#8e8d8a',
       },
     },
   },
