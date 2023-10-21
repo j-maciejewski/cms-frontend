@@ -1,5 +1,8 @@
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import Image from 'next/image'
 import Link from 'next/link'
+import { twMerge } from 'tailwind-merge'
 
 import { IMAGES_URL } from '@/consts'
 import { CategoryWithArticlesFragment } from '@/gql/graphql'
@@ -12,6 +15,8 @@ interface ICategoryPreview {
 
 export const CategoryPreview = ({ category }: ICategoryPreview) => {
   const [mainArticle, ...asideArticles] = category.articles ?? []
+
+  dayjs.extend(relativeTime)
 
   return (
     <div className="w-full">
@@ -28,7 +33,7 @@ export const CategoryPreview = ({ category }: ICategoryPreview) => {
                 src={`${IMAGES_URL}/${mainArticle.leadImage}`}
               />
               <div className="absolute bottom-2 left-2 w-[calc(100%-1rem)] tracking-wider">
-                <span className="bg-primary/80 box-decoration-clone px-2 py-1 text-[20px]/[36px] font-semibold text-white">
+                <span className="bg-primary/80 box-decoration-clone px-2 py-1 text-[18px]/[36px] font-semibold text-white">
                   {mainArticle?.title}
                 </span>
               </div>
@@ -41,7 +46,7 @@ export const CategoryPreview = ({ category }: ICategoryPreview) => {
           </Link>
         </div>
         {asideArticles.map((article, idx) => (
-          <div key={article.id} className={idx === 0 ? 'row-span-2' : ''}>
+          <div key={article.id} className={twMerge('flex flex-col', idx === 0 && 'row-span-2')}>
             <Link href={`/article/${article.slug}`}>
               <div className="relative aspect-[16/9] overflow-hidden duration-200 ease-in-out hover:opacity-90">
                 <Image
@@ -53,10 +58,16 @@ export const CategoryPreview = ({ category }: ICategoryPreview) => {
                 />
               </div>
             </Link>
-            <div className="w-[calc(100% - .5rem)] mt-2 tracking-wider hover:text-blue-700">
+            <div className="w-[calc(100% - .5rem)] mt-2 grow tracking-wider hover:text-blue-700">
               <Link href={`/article/${article.slug}`}>
                 <span className="box-decoration-clone text-[16px] font-medium">{article.title}</span>
               </Link>
+            </div>
+            <div className={twMerge('mt-2 flex justify-between text-[12px] font-medium tracking-wider text-gray-400')}>
+              <span>
+                {article.author?.firstName} {article.author?.lastName}
+              </span>
+              <span>{dayjs(Number(article.createdAt)).fromNow()}</span>
             </div>
           </div>
         ))}

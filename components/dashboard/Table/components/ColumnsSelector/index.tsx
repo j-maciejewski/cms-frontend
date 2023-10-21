@@ -38,7 +38,7 @@ export const ColumnsSelector = ({ columns, toggleColumn }: IColumnsSelector) => 
           {columns
             .filter((column) => column.title)
             .map((column, idx) => (
-              <li key={idx} className="flex items-center px-3">
+              <li key={idx} className="flex items-center whitespace-nowrap px-3">
                 <input
                   type="checkbox"
                   className="mr-1 inline-flex hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"

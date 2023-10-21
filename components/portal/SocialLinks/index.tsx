@@ -3,14 +3,14 @@ import { FacebookIcon, InstagramIcon, TwitterIcon, YoutubeIcon } from '../../ico
 type IconLink = {
   Icon: any
   url: string
-  className: string
+  className?: string
 }
 
 const links: IconLink[] = [
   {
     url: 'https://www.facebook.com',
     Icon: FacebookIcon,
-    className: 'fill-[#1e3050]',
+    className: 'fill-[#316FF6]',
   },
   {
     url: 'https://www.twitter.com',
@@ -20,12 +20,10 @@ const links: IconLink[] = [
   {
     url: 'https://www.instagram.com',
     Icon: InstagramIcon,
-    className: 'fill-[#1d9bf0]',
   },
   {
     url: 'https://www.youtube.com',
     Icon: YoutubeIcon,
-    className: 'fill-[red]',
   },
 ]
 

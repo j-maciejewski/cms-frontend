@@ -18,7 +18,7 @@ export class Carousel extends Component<ICarousel> {
 
     return (
       <div>
-        <RRCarousel autoPlay={true} infiniteLoop={true} interval={5000} showThumbs={false}>
+        <RRCarousel autoPlay={true} infiniteLoop={true} interval={5000} showThumbs={false} showStatus={false}>
           {articles.map((article, idx) => (
             <div key={idx} className="relative h-full">
               <Image
@@ -28,9 +28,16 @@ export class Carousel extends Component<ICarousel> {
                 alt={article?.title}
                 src={`${IMAGES_URL}/${article.leadImage}`}
               />
-              <div className="absolute bottom-2 left-2 w-[calc(100%-1rem)] text-left tracking-wider">
-                <span className="bg-primary/80 box-decoration-clone px-2 py-1 text-[16px]/[32px]">{article.title}</span>
+              <div className="absolute bottom-2 left-2 w-[calc(100%-1rem)] tracking-wider">
+                <span className="bg-primary/80 box-decoration-clone px-2 py-1 text-[20px]/[40px] font-semibold text-white">
+                  {article?.title}
+                </span>
               </div>
+              {article.author && (
+                <span className="absolute right-2 top-2 bg-primary/80 px-1.5 py-0.5 text-xs text-white">
+                  {article?.author?.firstName} {article?.author?.lastName}
+                </span>
+              )}
             </div>
           ))}
         </RRCarousel>

@@ -22,6 +22,7 @@ export default function ({ searchParams }: { searchParams?: { [key: string]: str
     refetch: refetchArticles,
   } = useQuery<DashboardArticlesQuery, DashboardArticlesQueryVariables>(dashboardQueries.ARTICLES_LIST, {
     variables: { grid },
+    notifyOnNetworkStatusChange: true,
   })
 
   if (articlesLoading) return <Spinner className="m-auto h-16 w-16 animate-infinite-spin text-white" />

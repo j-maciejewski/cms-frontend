@@ -1,5 +1,5 @@
 import { fetchArticles } from '@/actions'
-import { DisplayModeButtons, InfiniteScrollArticles } from '@/components/portal'
+import { ArticlesGroupHeader, DisplayModeButtons, InfiniteScrollArticles } from '@/components/portal'
 import { ArticlesGridInputFilter } from '@/gql/graphql'
 
 export default async function ({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
@@ -28,9 +28,7 @@ export default async function ({ searchParams }: { searchParams?: { [key: string
         </div>
       ) : (
         <>
-          <div className="mb-4 text-[20px] font-medium">
-            Found {articlesData.articles.total} articles for: {searchQuery}
-          </div>
+          <ArticlesGroupHeader label={`Found ${articlesData.articles.total} articles for: ${searchQuery}`} />
           <InfiniteScrollArticles
             filter={filter}
             initialArticles={articlesData.articles.rows}

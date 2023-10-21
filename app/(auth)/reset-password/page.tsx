@@ -1,4 +1,4 @@
-import { ResetPasswordForm } from '@/components/dashboard'
+import { ResetPasswordForm } from '@/components/dashboard/ResetPasswordForm'
 
 export default function () {
   return (

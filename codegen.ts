@@ -18,6 +18,11 @@ const config: CodegenConfig = {
       plugins: ['introspection'],
     },
   },
+  config: {
+    namingConvention: {
+      enumValues: 'change-case-all#upperCase',
+    },
+  },
 }
 
 export default config

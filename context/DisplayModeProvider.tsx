@@ -1,6 +1,6 @@
 'use client'
 
-import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useMemo, useState } from 'react'
+import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 export enum DisplayModes {
   TWO_PER_ROW = 'TWO_PER_ROW',
@@ -18,13 +18,16 @@ interface IDisplayModeProviderProps {
 }
 
 const DisplayModeProvider = (props: IDisplayModeProviderProps) => {
-  const [displayMode, setDisplayMode] = useState<DisplayModes>(() => {
+  const [displayMode, setDisplayMode] = useState<DisplayModes>(DisplayModes.THREE_PER_ROW)
+
+  useEffect(() => {
     const storedDisplayMode = localStorage.getItem('displayMode')
 
-    if (Object.values(DisplayModes).includes(storedDisplayMode as unknown as DisplayModes)) return storedDisplayMode as DisplayModes
+    if (Object.values(DisplayModes).includes(storedDisplayMode as unknown as DisplayModes))
+      setDisplayMode(storedDisplayMode as DisplayModes)
 
-    return DisplayModes.THREE_PER_ROW
-  })
+    setDisplayMode(DisplayModes.THREE_PER_ROW)
+  }, [])
 
   const changeDisplayMode = (newDisplayMode: DisplayModes) => {
     localStorage.setItem('displayMode', newDisplayMode)

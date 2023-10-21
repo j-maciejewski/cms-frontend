@@ -1,10 +1,11 @@
 'use client'
 
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { useCategories } from '@/app/(dashboard)/dashboard/categories/CategoriesProvider'
 import { PlusIcon } from '@/components/icons'
 
+import { Pagination } from '../Pagination'
 import { Table } from '../Table'
 import { CategoryForm } from './components'
 import { dataRows } from './helpers'
@@ -13,6 +14,7 @@ import { useColumns } from './hooks'
 export const CategoriesTable = () => {
   const {
     categories,
+    refetchCategories,
     searchText,
     handleChangeSearchText,
     filtersShown,
@@ -25,26 +27,6 @@ export const CategoriesTable = () => {
   const [columns, setColumns] = useState(useColumns())
   const rows = useMemo(() => (categories ? dataRows(categories) : []), [categories])
 
-  // useEffect(() => {
-  //   const handleClickOutside = (e: MouseEvent) => {
-  //     if (!modalRef.current) return
-
-  //     const dialogDimensions = modalRef.current.getBoundingClientRect()
-  //     if (
-  //       e.clientX < dialogDimensions.left ||
-  //       e.clientX > dialogDimensions.right ||
-  //       e.clientY < dialogDimensions.top ||
-  //       e.clientY > dialogDimensions.bottom
-  //     ) {
-  //       if (window.confirm('Are you sure you want to cancel?')) modalRef.current.close()
-  //     }
-  //   }
-
-  //   modalRef.current?.addEventListener('click', handleClickOutside)
-
-  //   return () => modalRef.current?.removeEventListener('click', handleClickOutside)
-  // }, [])
-
   return (
     <>
       <Table
@@ -56,12 +38,14 @@ export const CategoriesTable = () => {
         filters={[]}
         filtersShown={filtersShown}
         setFiltersShown={setFiltersShown}
+        handleRefetch={refetchCategories}
         mainActionNode={{
           text: 'Create category',
           Icon: PlusIcon,
           onClick: () => setFormDialog({ state: 'open' }),
         }}
       />
+      <Pagination />
 
       <dialog ref={formDialogRef} className="rounded-lg">
         {formDialog.state === 'open' && <CategoryForm />}

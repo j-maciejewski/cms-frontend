@@ -9,6 +9,7 @@ import {
   RefObject,
   SetStateAction,
   createContext,
+  useCallback,
   useContext,
   useMemo,
   useState,
@@ -36,9 +37,7 @@ import { dashboardMutations } from '@/services'
 
 interface IArticlesContext {
   articles: DashboardArticleInListFragment[]
-  refetchArticles: (
-    variables?: Partial<Exact<{ grid?: InputMaybe<ArticlesGridInput> | undefined }>> | undefined,
-  ) => Promise<ApolloQueryResult<DashboardArticlesQuery>>
+  refetchArticles: () => Promise<ApolloQueryResult<DashboardArticlesQuery>>
   searchText: string
   handleChangeSearchText: (evt: ChangeEvent<HTMLInputElement>) => void
   filtersShown: boolean
@@ -85,6 +84,8 @@ const ArticlesProvider = (props: IArticlesProviderProps) => {
   const { articles, refetchArticles, ...rest } = props
   const { grid, handleChange } = useGrid()
 
+  const handleRefetch = useCallback(() => refetchArticles({ grid }), [grid])
+
   const triggerSearch = (searchValue: string) => {
     const trimmedValue = searchValue.trim()
 
@@ -123,7 +124,7 @@ const ArticlesProvider = (props: IArticlesProviderProps) => {
   const value = useMemo(
     () => ({
       articles,
-      refetchArticles,
+      refetchArticles: handleRefetch,
       searchText,
       handleChangeSearchText,
       filtersShown,
@@ -135,7 +136,7 @@ const ArticlesProvider = (props: IArticlesProviderProps) => {
       setFormDialog,
       formDialogRef,
     }),
-    [articles, searchText, filtersShown, formDialog],
+    [articles, searchText, filtersShown, formDialog, handleRefetch],
   )
 
   return <ArticlesContext.Provider value={value} {...rest} />

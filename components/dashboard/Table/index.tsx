@@ -1,9 +1,7 @@
-import { ApolloQueryResult } from '@apollo/client'
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useMemo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { MagnifierIcon } from '@/components/icons'
-import { ArticlesGridInput, Exact, InputMaybe } from '@/gql/graphql'
 
 import { ActionNode, ColumnsSelector, RefreshDataButton, ToggleFiltersButton } from './components'
 import { IActionProps, ITableColumn, ITableFilter, ITableRow } from './types'

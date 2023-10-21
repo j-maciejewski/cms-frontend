@@ -3,6 +3,8 @@
 import './globals.css'
 import { ThemeProvider } from 'next-themes'
 import { Inter } from 'next/font/google'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { Main, Navbar, Sidebar } from '@/components/dashboard'
 import { SidebarProvider } from '@/context/SidebarProvider'
@@ -23,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </SidebarProvider>
       </ThemeProvider>
+      <ToastContainer />
     </body>
   )
 }

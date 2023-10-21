@@ -19,7 +19,7 @@ export const TextInput = ({ Icon, errors, inputProps }: ITextInput) => {
         autoComplete="off"
         {...inputProps}
         className={twMerge(
-          'block w-full rounded-lg border border-gray-200 p-2 text-sm text-gray-500 hover:text-gray-700 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white',
+          'block w-full rounded-lg border border-gray-200 bg-white p-2 text-sm text-gray-500 hover:text-gray-700 focus:outline-blue-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white',
           Icon && 'rounded-l-none',
           inputProps?.className,
         )}

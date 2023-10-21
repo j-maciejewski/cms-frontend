@@ -37,7 +37,7 @@ const PaginationItem = ({
   )
 }
 
-export const Pagination = ({ options }: { options: number[] }) => {
+export const Pagination = ({ options }: { options?: number[] }) => {
   const { grid, currentItems, totalItems, handleChange } = useGrid()
 
   const activePage = grid.page ? parseInt(grid.page) : 1
@@ -77,7 +77,7 @@ export const Pagination = ({ options }: { options: number[] }) => {
           <PaginationItem text="Next" handleClick={onPageChange(next)} disabled={next === null} />
         </ul>
       )}
-      <ItemsPerPageSelect options={options} />
+      {options && <ItemsPerPageSelect options={options} />}
     </nav>
   )
 }

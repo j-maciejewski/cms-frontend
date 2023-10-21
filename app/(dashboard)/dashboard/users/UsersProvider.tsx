@@ -1,6 +1,6 @@
 'use client'
 
-import { ApolloCache, DefaultContext, MutationTuple, useMutation } from '@apollo/client'
+import { ApolloCache, ApolloQueryResult, DefaultContext, MutationTuple, useMutation } from '@apollo/client'
 import {
   ChangeEvent,
   Dispatch,
@@ -8,29 +8,35 @@ import {
   RefObject,
   SetStateAction,
   createContext,
+  useCallback,
   useContext,
   useMemo,
   useState,
 } from 'react'
 
 import { UserFormDialogState, UsersTableHeadersKeys } from '@/components/dashboard/UsersTable/consts'
+import { useGrid } from '@/context/GridProvider'
 import {
   CreateUserInput,
   CreateUserMutation,
   CreateUserMutationVariables,
   DashboardUserFragment,
+  DashboardUsersQuery,
   DeleteUserMutation,
   DeleteUserMutationVariables,
   Exact,
+  InputMaybe,
   UpdateUserInput,
   UpdateUserMutation,
   UpdateUserMutationVariables,
+  UsersGridInput,
 } from '@/gql/graphql'
 import { useDialogForm } from '@/hooks'
 import { dashboardMutations } from '@/services'
 
 interface IUsersContext {
   users: DashboardUserFragment[]
+  refetchUsers: () => Promise<ApolloQueryResult<DashboardUsersQuery>>
   searchText: string
   handleChangeSearchText: (evt: ChangeEvent<HTMLInputElement>) => void
   filtersShown: boolean
@@ -67,11 +73,17 @@ interface IUsersContext {
 
 interface IUsersProviderProps {
   users: DashboardUserFragment[]
+  refetchUsers: (
+    variables?: Partial<Exact<{ grid?: InputMaybe<UsersGridInput> | undefined }>> | undefined,
+  ) => Promise<ApolloQueryResult<DashboardUsersQuery>>
   children: ReactNode
 }
 
 const UsersProvider = (props: IUsersProviderProps) => {
-  const { users, ...rest } = props
+  const { users, refetchUsers, ...rest } = props
+  const { grid, handleChange } = useGrid()
+
+  const handleRefetch = useCallback(() => refetchUsers({ grid }), [grid])
 
   const [searchText, setSearchText] = useState('')
   const handleChangeSearchText = (evt: ChangeEvent<HTMLInputElement>) => setSearchText(evt.target.value)
@@ -100,6 +112,7 @@ const UsersProvider = (props: IUsersProviderProps) => {
   const value = useMemo(
     () => ({
       users: filteredUsers,
+      refetchUsers: handleRefetch,
       searchText,
       handleChangeSearchText,
       filtersShown,
@@ -111,7 +124,7 @@ const UsersProvider = (props: IUsersProviderProps) => {
       setFormDialog,
       formDialogRef,
     }),
-    [users, searchText, filtersShown, formDialog],
+    [users, searchText, filtersShown, formDialog, handleRefetch],
   )
 
   return <UsersContext.Provider value={value} {...rest} />

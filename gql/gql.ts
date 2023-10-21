@@ -17,6 +17,7 @@ const documents = {
     "\n  fragment dashboardArticleInList on Article {\n    id\n    title\n    slug\n    createdAt\n    isHidden\n    isHighlighted\n    author {\n      id\n      firstName\n      lastName\n    }\n    category {\n      id\n      name\n      slug\n    }\n  }\n": types.DashboardArticleInListFragmentDoc,
     "\n  fragment basicDashboardCategory on Category {\n    id\n    name\n  }\n": types.BasicDashboardCategoryFragmentDoc,
     "\n  fragment dashboardCategory on Category {\n    id\n    name\n    slug\n  }\n": types.DashboardCategoryFragmentDoc,
+    "\n  fragment dashboardMessage on Message {\n    id\n    name\n    email\n    content\n    replySent\n  }\n": types.DashboardMessageFragmentDoc,
     "\n  fragment dashboardUser on User {\n    id\n    email\n    firstName\n    lastName\n    avatar\n    role\n    isSuspended\n    isAnonymous\n  }\n": types.DashboardUserFragmentDoc,
     "\n  mutation createArticle($createArticleInput: CreateArticleInput!) {\n    createArticle(createArticleInput: $createArticleInput) {\n      ...dashboardArticle\n    }\n  }\n\n  \n": types.CreateArticleDocument,
     "\n  mutation createCategory($createCategoryInput: CreateCategoryInput!) {\n    createCategory(createCategoryInput: $createCategoryInput) {\n      ...dashboardCategory\n    }\n  }\n\n  \n": types.CreateCategoryDocument,
@@ -31,7 +32,8 @@ const documents = {
     "\n  query basicDashboardCategories {\n    categories {\n      ...basicDashboardCategory\n    }\n  }\n\n  \n": types.BasicDashboardCategoriesDocument,
     "\n  query dashboardCategories {\n    categories {\n      ...dashboardCategory\n      articlesCount\n    }\n  }\n\n  \n": types.DashboardCategoriesDocument,
     "\n  query dashboardCategory($id: String!) {\n    category(id: $id) {\n      ...dashboardCategory\n      articlesCount\n    }\n  }\n\n  \n": types.DashboardCategoryDocument,
-    "\n  query dashboardUsers {\n    users {\n      ...dashboardUser\n    }\n  }\n\n  \n": types.DashboardUsersDocument,
+    "\n  query dashboardMessages($grid: MessagesGridInput) {\n    messages(grid: $grid) {\n      total\n      rows {\n        ...dashboardMessage\n      }\n    }\n  }\n\n  \n": types.DashboardMessagesDocument,
+    "\n  query dashboardUsers($grid: UsersGridInput) {\n    users(grid: $grid) {\n      total\n      rows {\n        ...dashboardUser\n      }\n    }\n  }\n\n  \n": types.DashboardUsersDocument,
     "\n  fragment article on Article {\n    id\n    content\n    createdAt\n    isHidden\n    leadImage\n    slug\n    title\n    updatedAt\n\n    author {\n      avatar\n      firstName\n      lastName\n      id\n    }\n\n    category {\n      id\n      name\n      slug\n    }\n  }\n": types.ArticleFragmentDoc,
     "\n  fragment articleInList on Article {\n    id\n    title\n    slug\n    createdAt\n    leadImage\n    author {\n      id\n      firstName\n      lastName\n    }\n  }\n": types.ArticleInListFragmentDoc,
     "\n  fragment category on Category {\n    id\n    name\n    slug\n  }\n": types.CategoryFragmentDoc,
@@ -73,6 +75,10 @@ export function graphql(source: "\n  fragment basicDashboardCategory on Category
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  fragment dashboardCategory on Category {\n    id\n    name\n    slug\n  }\n"): (typeof documents)["\n  fragment dashboardCategory on Category {\n    id\n    name\n    slug\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment dashboardMessage on Message {\n    id\n    name\n    email\n    content\n    replySent\n  }\n"): (typeof documents)["\n  fragment dashboardMessage on Message {\n    id\n    name\n    email\n    content\n    replySent\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -132,7 +138,11 @@ export function graphql(source: "\n  query dashboardCategory($id: String!) {\n  
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query dashboardUsers {\n    users {\n      ...dashboardUser\n    }\n  }\n\n  \n"): (typeof documents)["\n  query dashboardUsers {\n    users {\n      ...dashboardUser\n    }\n  }\n\n  \n"];
+export function graphql(source: "\n  query dashboardMessages($grid: MessagesGridInput) {\n    messages(grid: $grid) {\n      total\n      rows {\n        ...dashboardMessage\n      }\n    }\n  }\n\n  \n"): (typeof documents)["\n  query dashboardMessages($grid: MessagesGridInput) {\n    messages(grid: $grid) {\n      total\n      rows {\n        ...dashboardMessage\n      }\n    }\n  }\n\n  \n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query dashboardUsers($grid: UsersGridInput) {\n    users(grid: $grid) {\n      total\n      rows {\n        ...dashboardUser\n      }\n    }\n  }\n\n  \n"): (typeof documents)["\n  query dashboardUsers($grid: UsersGridInput) {\n    users(grid: $grid) {\n      total\n      rows {\n        ...dashboardUser\n      }\n    }\n  }\n\n  \n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

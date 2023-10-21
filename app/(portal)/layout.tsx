@@ -1,5 +1,7 @@
 import '../globals.css'
 import { Inter } from 'next/font/google'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { twMerge } from 'tailwind-merge'
 
 import { Aside, Footer, Header } from '@/components/portal'
@@ -34,7 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <CategoriesProvider categories={categoriesData.categories}>
         <RoutesProvider>
           <DisplayModeProvider>
-            <div className="mx-auto flex min-h-screen max-w-[1200px] flex-col">
+            <div className="mx-auto flex min-h-screen max-w-[1300px] flex-col">
               <Header />
               <div className="m-4 grid grow gap-5 overflow-hidden lg:grid-cols-[70%_30%]">
                 <main>{children}</main>
@@ -45,6 +47,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </DisplayModeProvider>
         </RoutesProvider>
       </CategoriesProvider>
+      <ToastContainer />
     </body>
   )
 }

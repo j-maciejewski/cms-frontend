@@ -1,12 +1,13 @@
 import { useQuery } from '@apollo/client'
 import Link from 'next/link'
 import { useMemo } from 'react'
+import { toast } from 'react-toastify'
 
 import { useArticles } from '@/app/(dashboard)/dashboard/articles/ArticlesProvider'
 import { PenIcon, TrashIcon } from '@/components/icons'
-import { DASHBOARD_ROUTES } from '@/consts/routes'
+import { defaultNotifyOptions } from '@/consts'
 import { useGrid } from '@/context/GridProvider'
-import { DashboardArticlesQuery, DashboardCategoriesQuery, DashboardCategoriesQueryVariables } from '@/gql/graphql'
+import { DashboardCategoriesQuery, DashboardCategoriesQueryVariables } from '@/gql/graphql'
 import { dashboardQueries } from '@/services'
 import { FilterOperators, FilterTypes } from '@/utils'
 
@@ -25,14 +26,29 @@ export const useColumns = () => {
   const handleDelete = (id: string) => {
     if (!window.confirm('Confirm deleting category')) return
 
+    const notificationId = toast.loading('Deleting article...', defaultNotifyOptions)
+
     deleteArticle({
       variables: { id },
       update: (cache, { data }) => {
         if (!data?.deleteArticle) return
 
         refetchArticles({ grid })
+        toast.update(notificationId, {
+          render: 'Article has been deleted',
+          type: 'success',
+          isLoading: false,
+          ...defaultNotifyOptions,
+        })
       },
-    })
+    }).catch(() =>
+      toast.update(notificationId, {
+        render: 'There was an error while deleting article',
+        type: 'error',
+        isLoading: false,
+        ...defaultNotifyOptions,
+      }),
+    )
   }
 
   const columns: ITableColumn[] = useMemo(

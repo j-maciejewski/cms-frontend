@@ -1,6 +1,6 @@
 'use client'
 
-import { ApolloCache, DefaultContext, MutationTuple, useMutation } from '@apollo/client'
+import { ApolloCache, ApolloQueryResult, DefaultContext, MutationTuple, useMutation } from '@apollo/client'
 import {
   ChangeEvent,
   Dispatch,
@@ -8,6 +8,7 @@ import {
   RefObject,
   SetStateAction,
   createContext,
+  useCallback,
   useContext,
   useMemo,
   useState,
@@ -18,6 +19,7 @@ import {
   CreateCategoryInput,
   CreateCategoryMutation,
   CreateCategoryMutationVariables,
+  DashboardCategoriesQuery,
   DashboardCategoryFragment,
   DeleteCategoryMutation,
   DeleteCategoryMutationVariables,
@@ -31,6 +33,7 @@ import { dashboardMutations } from '@/services'
 
 interface ICategoriesContext {
   categories: DashboardCategoryFragment[]
+  refetchCategories: () => Promise<ApolloQueryResult<DashboardCategoriesQuery>>
   searchText: string
   handleChangeSearchText: (evt: ChangeEvent<HTMLInputElement>) => void
   filtersShown: boolean
@@ -67,11 +70,14 @@ interface ICategoriesContext {
 
 interface ICategoriesProviderProps {
   categories: DashboardCategoryFragment[]
+  refetchCategories: () => Promise<ApolloQueryResult<DashboardCategoriesQuery>>
   children: ReactNode
 }
 
 const CategoriesProvider = (props: ICategoriesProviderProps) => {
-  const { categories, ...rest } = props
+  const { categories, refetchCategories, ...rest } = props
+
+  const handleRefetch = useCallback(() => refetchCategories(), [])
 
   const [searchText, setSearchText] = useState('')
   const handleChangeSearchText = (evt: ChangeEvent<HTMLInputElement>) => setSearchText(evt.target.value)
@@ -105,6 +111,7 @@ const CategoriesProvider = (props: ICategoriesProviderProps) => {
   const value = useMemo(
     () => ({
       categories: filteredCategories,
+      refetchCategories: handleRefetch,
       searchText,
       handleChangeSearchText,
       filtersShown,
@@ -116,7 +123,7 @@ const CategoriesProvider = (props: ICategoriesProviderProps) => {
       setFormDialog,
       formDialogRef,
     }),
-    [filteredCategories, searchText, filtersShown, formDialog],
+    [filteredCategories, searchText, filtersShown, formDialog, handleRefetch],
   )
 
   return <CategoriesContext.Provider value={value} {...rest} />

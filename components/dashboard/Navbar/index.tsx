@@ -1,6 +1,7 @@
+import Image from 'next/image'
+
 import { BarsIcon } from '@/components/icons'
 import { useSidebar } from '@/context/SidebarProvider'
-import Image from 'next/image'
 
 import { ToggleThemeButton } from '../ToggleThemeButton'
 
@@ -25,9 +26,6 @@ export const Navbar = () => {
               </button>
               <div className="ml-4 flex md:mr-24">
                 <Image src="/jol.gif" height={24} width={100} alt="logo" priority={true} className="mr-3 h-8" />
-                <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white sm:text-2xl">
-                  Joel
-                </span>
               </div>
             </div>
 
