@@ -1,13 +1,13 @@
 import { gql } from '@apollo/client'
 
-import { ARTICLE_FRAGMENT } from '../fragments'
+import { PUBLIC_ARTICLE_FRAGMENT } from '../fragments'
 
-export const GET_ARTICLE = gql`
-  query article($filter: ArticleFilterInput!) {
-    article(filter: $filter) {
-      ...article
+export const PUBLIC_ARTICLE = gql`
+  query publicArticle($filter: ArticleFilterInput!) {
+    publicArticle(filter: $filter) {
+      ...publicArticle
     }
   }
 
-  ${ARTICLE_FRAGMENT}
+  ${PUBLIC_ARTICLE_FRAGMENT}
 `

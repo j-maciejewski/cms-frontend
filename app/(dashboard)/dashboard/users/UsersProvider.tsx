@@ -15,7 +15,7 @@ import {
 } from 'react'
 
 import { UserFormDialogState, UsersTableHeadersKeys } from '@/components/dashboard/UsersTable/consts'
-import { useGrid } from '@/context/GridProvider'
+import { useGrid } from '@/context/dashboard/GridProvider'
 import {
   CreateUserInput,
   CreateUserMutation,

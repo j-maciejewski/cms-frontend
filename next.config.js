@@ -35,8 +35,8 @@ const nextConfig = {
         destination: 'http://10.0.10.2:3001',
       },
       {
-        source: '/api/:path',
-        destination: 'http://10.0.10.2:3001/:path',
+        source: '/api/:path*',
+        destination: 'http://10.0.10.2:3001/:path*',
       },
     ]
   },

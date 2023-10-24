@@ -1,12 +1,18 @@
 import Image from 'next/image'
+import { useState } from 'react'
 
 import { BarsIcon } from '@/components/icons'
-import { useSidebar } from '@/context/SidebarProvider'
+import { useSidebar } from '@/context/dashboard'
 
 import { ToggleThemeButton } from '../ToggleThemeButton'
+import { UserNavDropdown } from '../UserNavDropdown'
 
 export const Navbar = () => {
   const { toggleSidebar } = useSidebar()
+  const [userNavDropdownOpen, setUserNavDropdownOpen] = useState(false)
+
+  const openDropdown = () => setUserNavDropdownOpen(true)
+  const closeDropdown = () => setUserNavDropdownOpen(false)
 
   return (
     <>
@@ -25,19 +31,20 @@ export const Navbar = () => {
                 <BarsIcon className="h-5 w-5" />
               </button>
               <div className="ml-4 flex md:mr-24">
-                <Image src="/jol.gif" height={24} width={100} alt="logo" priority={true} className="mr-3 h-8" />
+                <Image src="/jol.gif" height={24} width={100} alt="logo" priority={true} className="mr-3 h-8 w-auto" />
               </div>
             </div>
 
             <div className="flex items-center">
               <ToggleThemeButton />
-              <div className="ml-3 flex items-center">
+              <div className="relative ml-3 flex items-center">
                 <div>
                   <button
                     type="button"
                     className="flex rounded-full bg-gray-800 text-sm"
                     aria-expanded="false"
                     data-dropdown-toggle="dropdown-user"
+                    onClick={openDropdown}
                   >
                     <span className="sr-only">Open user menu</span>
                     <img
@@ -47,57 +54,7 @@ export const Navbar = () => {
                     />
                   </button>
                 </div>
-                <div
-                  className="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded bg-white text-base shadow dark:divide-gray-600 dark:bg-gray-700"
-                  id="dropdown-user"
-                >
-                  <div className="px-4 py-3" role="none">
-                    <p className="text-sm text-gray-900 dark:text-white" role="none">
-                      Neil Sims
-                    </p>
-                    <p className="truncate text-sm font-medium text-gray-900 dark:text-gray-300" role="none">
-                      neil.sims@flowbite.com
-                    </p>
-                  </div>
-                  <ul className="py-1" role="none">
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                        role="menuitem"
-                      >
-                        Dashboard
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                        role="menuitem"
-                      >
-                        Settings
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                        role="menuitem"
-                      >
-                        Earnings
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                        role="menuitem"
-                      >
-                        Sign out
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+                {userNavDropdownOpen && <UserNavDropdown closeDropdown={closeDropdown} />}
               </div>
             </div>
           </div>

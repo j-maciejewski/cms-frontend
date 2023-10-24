@@ -2,14 +2,14 @@
 
 import { ReactNode, createContext, useContext, useMemo } from 'react'
 
-import { CategoryFragment } from '@/gql/graphql'
+import { PublicCategoryFragment } from '@/gql/graphql'
 
 interface ICategoriesContext {
-  categories: CategoryFragment[]
+  categories: PublicCategoryFragment[]
 }
 
 interface ICategoriesProviderProps {
-  categories: CategoryFragment[]
+  categories: PublicCategoryFragment[]
   children: ReactNode
 }
 

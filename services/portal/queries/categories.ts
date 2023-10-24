@@ -1,13 +1,13 @@
 import { gql } from '@apollo/client'
 
-import { CATEGORY_FRAGMENT } from '../fragments'
+import { PUBLIC_CATEGORY_FRAGMENT } from '../fragments'
 
-export const GET_CATEGORIES = gql`
-  query categories {
-    categories {
-      ...category
+export const PUBLIC_CATEGORIES = gql`
+  query publicCategories {
+    publicCategories {
+      ...publicCategory
     }
   }
 
-  ${CATEGORY_FRAGMENT}
+  ${PUBLIC_CATEGORY_FRAGMENT}
 `

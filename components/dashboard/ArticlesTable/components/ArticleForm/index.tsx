@@ -2,13 +2,13 @@
 
 import { useQuery } from '@apollo/client'
 import { $generateHtmlFromNodes } from '@lexical/html'
-import { ChangeEvent, DragEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, DragEvent, useRef, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
 import { useArticles } from '@/app/(dashboard)/dashboard/articles/ArticlesProvider'
-import { LexicalEditor, Select, Spinner, TextInput } from '@/components/dashboard'
-import { PenIcon, XmarkIcon } from '@/components/icons'
+import { LexicalEditor, Select, TextInput } from '@/components/dashboard'
+import { PenIcon, Spinner2Icon, XmarkIcon } from '@/components/icons'
 import { BasicDashboardCategoriesQuery, BasicDashboardCategoriesQueryVariables } from '@/gql/graphql'
 import { dashboardQueries } from '@/services'
 import { Category } from '@/types'
@@ -106,13 +106,14 @@ export const ArticleForm = () => {
 
   if (formDialog.state === 'closed') return null
 
-  if (formDialog.state === 'loading') return <Spinner className="m-auto h-8 w-8 animate-infinite-spin text-white" />
+  if (formDialog.state === 'loading')
+    return <Spinner2Icon className="m-auto h-8 w-8 animate-infinite-spin text-white" />
 
   return (
     <>
       {(createArticleLoading || updateArticleLoading || categoriesLoading) && (
         <div className="absolute flex h-full w-full items-center justify-center">
-          <Spinner className={twMerge('h-8 w-8 animate-infinite-spin text-white')} />
+          <Spinner2Icon className={twMerge('h-8 w-8 animate-infinite-spin text-white')} />
         </div>
       )}
       <form

@@ -25,24 +25,28 @@ const documents = {
     "\n  mutation deleteArticle($id: String!) {\n    deleteArticle(id: $id) {\n      id\n    }\n  }\n": types.DeleteArticleDocument,
     "\n  mutation deleteCategory($id: String!) {\n    deleteCategory(id: $id) {\n      id\n    }\n  }\n": types.DeleteCategoryDocument,
     "\n  mutation deleteUser($id: String!) {\n    deleteUser(id: $id) {\n      id\n    }\n  }\n": types.DeleteUserDocument,
+    "\n  mutation login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      accessToken\n    }\n  }\n": types.LoginDocument,
+    "\n  mutation logout {\n    logout\n  }\n": types.LogoutDocument,
     "\n  mutation updateArticle($id: String!, $updateArticleInput: UpdateArticleInput!) {\n    updateArticle(id: $id, updateArticleInput: $updateArticleInput) {\n      ...dashboardArticle\n    }\n  }\n\n  \n": types.UpdateArticleDocument,
     "\n  mutation updateCategory($id: String!, $updateCategoryInput: UpdateCategoryInput!) {\n    updateCategory(id: $id, updateCategoryInput: $updateCategoryInput) {\n      ...dashboardCategory\n    }\n  }\n\n  \n": types.UpdateCategoryDocument,
     "\n  mutation updateUser($id: String!, $updateUserInput: UpdateUserInput!) {\n    updateUser(id: $id, updateUserInput: $updateUserInput) {\n      ...dashboardUser\n    }\n  }\n\n  \n": types.UpdateUserDocument,
+    "\n  query activeUser {\n    activeUser {\n      id\n      firstName\n      lastName\n      email\n      avatar\n    }\n  }\n": types.ActiveUserDocument,
     "\n  query dashboardArticles($grid: ArticlesGridInput) {\n    articles(grid: $grid) {\n      total\n      rows {\n        ...dashboardArticleInList\n      }\n    }\n  }\n\n  \n": types.DashboardArticlesDocument,
     "\n  query basicDashboardCategories {\n    categories {\n      ...basicDashboardCategory\n    }\n  }\n\n  \n": types.BasicDashboardCategoriesDocument,
     "\n  query dashboardCategories {\n    categories {\n      ...dashboardCategory\n      articlesCount\n    }\n  }\n\n  \n": types.DashboardCategoriesDocument,
     "\n  query dashboardCategory($id: String!) {\n    category(id: $id) {\n      ...dashboardCategory\n      articlesCount\n    }\n  }\n\n  \n": types.DashboardCategoryDocument,
     "\n  query dashboardMessages($grid: MessagesGridInput) {\n    messages(grid: $grid) {\n      total\n      rows {\n        ...dashboardMessage\n      }\n    }\n  }\n\n  \n": types.DashboardMessagesDocument,
     "\n  query dashboardUsers($grid: UsersGridInput) {\n    users(grid: $grid) {\n      total\n      rows {\n        ...dashboardUser\n      }\n    }\n  }\n\n  \n": types.DashboardUsersDocument,
-    "\n  fragment article on Article {\n    id\n    content\n    createdAt\n    isHidden\n    leadImage\n    slug\n    title\n    updatedAt\n\n    author {\n      avatar\n      firstName\n      lastName\n      id\n    }\n\n    category {\n      id\n      name\n      slug\n    }\n  }\n": types.ArticleFragmentDoc,
-    "\n  fragment articleInList on Article {\n    id\n    title\n    slug\n    createdAt\n    leadImage\n    author {\n      id\n      firstName\n      lastName\n    }\n  }\n": types.ArticleInListFragmentDoc,
-    "\n  fragment category on Category {\n    id\n    name\n    slug\n  }\n": types.CategoryFragmentDoc,
-    "\n  fragment categoryWithArticles on Category {\n    id\n    name\n    slug\n\n    articles {\n      id\n      content\n      createdAt\n      isHidden\n      leadImage\n      slug\n      title\n      updatedAt\n\n      author {\n        avatar\n        firstName\n        lastName\n        id\n      }\n    }\n  }\n": types.CategoryWithArticlesFragmentDoc,
-    "\n  query article($filter: ArticleFilterInput!) {\n    article(filter: $filter) {\n      ...article\n    }\n  }\n\n  \n": types.ArticleDocument,
-    "\n  query articlesByCategory($grid: ArticlesGridInput) {\n    articles(grid: $grid) {\n      total\n      rows {\n        ...articleInList\n      }\n    }\n  }\n\n  \n": types.ArticlesByCategoryDocument,
-    "\n  query categories {\n    categories {\n      ...category\n    }\n  }\n\n  \n": types.CategoriesDocument,
-    "\n  query highlightedArticles {\n    highlightedArticles {\n      ...article\n    }\n  }\n\n  \n": types.HighlightedArticlesDocument,
-    "\n  query homePageArticles {\n    homePageArticles {\n      ...categoryWithArticles\n    }\n  }\n\n  \n": types.HomePageArticlesDocument,
+    "\n  fragment publicArticle on PublicArticle {\n    id\n    content\n    createdAt\n    leadImage\n    slug\n    title\n    updatedAt\n\n    author {\n      avatar\n      firstName\n      lastName\n      id\n    }\n\n    category {\n      id\n      name\n      slug\n    }\n  }\n": types.PublicArticleFragmentDoc,
+    "\n  fragment publicArticleInList on PublicArticle {\n    id\n    title\n    slug\n    createdAt\n    leadImage\n    author {\n      id\n      firstName\n      lastName\n    }\n  }\n": types.PublicArticleInListFragmentDoc,
+    "\n  fragment publicCategory on PublicCategory {\n    id\n    name\n    slug\n  }\n": types.PublicCategoryFragmentDoc,
+    "\n  fragment publicCategoryWithArticles on PublicCategory {\n    id\n    name\n    slug\n\n    articles {\n      id\n      content\n      createdAt\n      leadImage\n      slug\n      title\n      updatedAt\n\n      author {\n        avatar\n        firstName\n        lastName\n        id\n      }\n    }\n  }\n": types.PublicCategoryWithArticlesFragmentDoc,
+    "\n  mutation createMessage($createMessageInput: CreateMessageInput!) {\n    createMessage(createMessageInput: $createMessageInput)\n  }\n": types.CreateMessageDocument,
+    "\n  query publicArticle($filter: ArticleFilterInput!) {\n    publicArticle(filter: $filter) {\n      ...publicArticle\n    }\n  }\n\n  \n": types.PublicArticleDocument,
+    "\n  query publicArticlesByCategory($grid: ArticlesGridInput) {\n    publicArticles(grid: $grid) {\n      total\n      rows {\n        ...publicArticleInList\n      }\n    }\n  }\n\n  \n": types.PublicArticlesByCategoryDocument,
+    "\n  query publicCategories {\n    publicCategories {\n      ...publicCategory\n    }\n  }\n\n  \n": types.PublicCategoriesDocument,
+    "\n  query publicHighlightedArticles {\n    publicHighlightedArticles {\n      ...publicArticle\n    }\n  }\n\n  \n": types.PublicHighlightedArticlesDocument,
+    "\n  query publicHomePageArticles {\n    publicHomePageArticles {\n      ...publicCategoryWithArticles\n    }\n  }\n\n  \n": types.PublicHomePageArticlesDocument,
 };
 
 /**
@@ -110,6 +114,14 @@ export function graphql(source: "\n  mutation deleteUser($id: String!) {\n    de
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  mutation login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      accessToken\n    }\n  }\n"): (typeof documents)["\n  mutation login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      accessToken\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation logout {\n    logout\n  }\n"): (typeof documents)["\n  mutation logout {\n    logout\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  mutation updateArticle($id: String!, $updateArticleInput: UpdateArticleInput!) {\n    updateArticle(id: $id, updateArticleInput: $updateArticleInput) {\n      ...dashboardArticle\n    }\n  }\n\n  \n"): (typeof documents)["\n  mutation updateArticle($id: String!, $updateArticleInput: UpdateArticleInput!) {\n    updateArticle(id: $id, updateArticleInput: $updateArticleInput) {\n      ...dashboardArticle\n    }\n  }\n\n  \n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -119,6 +131,10 @@ export function graphql(source: "\n  mutation updateCategory($id: String!, $upda
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation updateUser($id: String!, $updateUserInput: UpdateUserInput!) {\n    updateUser(id: $id, updateUserInput: $updateUserInput) {\n      ...dashboardUser\n    }\n  }\n\n  \n"): (typeof documents)["\n  mutation updateUser($id: String!, $updateUserInput: UpdateUserInput!) {\n    updateUser(id: $id, updateUserInput: $updateUserInput) {\n      ...dashboardUser\n    }\n  }\n\n  \n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query activeUser {\n    activeUser {\n      id\n      firstName\n      lastName\n      email\n      avatar\n    }\n  }\n"): (typeof documents)["\n  query activeUser {\n    activeUser {\n      id\n      firstName\n      lastName\n      email\n      avatar\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -146,39 +162,43 @@ export function graphql(source: "\n  query dashboardUsers($grid: UsersGridInput)
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment article on Article {\n    id\n    content\n    createdAt\n    isHidden\n    leadImage\n    slug\n    title\n    updatedAt\n\n    author {\n      avatar\n      firstName\n      lastName\n      id\n    }\n\n    category {\n      id\n      name\n      slug\n    }\n  }\n"): (typeof documents)["\n  fragment article on Article {\n    id\n    content\n    createdAt\n    isHidden\n    leadImage\n    slug\n    title\n    updatedAt\n\n    author {\n      avatar\n      firstName\n      lastName\n      id\n    }\n\n    category {\n      id\n      name\n      slug\n    }\n  }\n"];
+export function graphql(source: "\n  fragment publicArticle on PublicArticle {\n    id\n    content\n    createdAt\n    leadImage\n    slug\n    title\n    updatedAt\n\n    author {\n      avatar\n      firstName\n      lastName\n      id\n    }\n\n    category {\n      id\n      name\n      slug\n    }\n  }\n"): (typeof documents)["\n  fragment publicArticle on PublicArticle {\n    id\n    content\n    createdAt\n    leadImage\n    slug\n    title\n    updatedAt\n\n    author {\n      avatar\n      firstName\n      lastName\n      id\n    }\n\n    category {\n      id\n      name\n      slug\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment articleInList on Article {\n    id\n    title\n    slug\n    createdAt\n    leadImage\n    author {\n      id\n      firstName\n      lastName\n    }\n  }\n"): (typeof documents)["\n  fragment articleInList on Article {\n    id\n    title\n    slug\n    createdAt\n    leadImage\n    author {\n      id\n      firstName\n      lastName\n    }\n  }\n"];
+export function graphql(source: "\n  fragment publicArticleInList on PublicArticle {\n    id\n    title\n    slug\n    createdAt\n    leadImage\n    author {\n      id\n      firstName\n      lastName\n    }\n  }\n"): (typeof documents)["\n  fragment publicArticleInList on PublicArticle {\n    id\n    title\n    slug\n    createdAt\n    leadImage\n    author {\n      id\n      firstName\n      lastName\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment category on Category {\n    id\n    name\n    slug\n  }\n"): (typeof documents)["\n  fragment category on Category {\n    id\n    name\n    slug\n  }\n"];
+export function graphql(source: "\n  fragment publicCategory on PublicCategory {\n    id\n    name\n    slug\n  }\n"): (typeof documents)["\n  fragment publicCategory on PublicCategory {\n    id\n    name\n    slug\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment categoryWithArticles on Category {\n    id\n    name\n    slug\n\n    articles {\n      id\n      content\n      createdAt\n      isHidden\n      leadImage\n      slug\n      title\n      updatedAt\n\n      author {\n        avatar\n        firstName\n        lastName\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment categoryWithArticles on Category {\n    id\n    name\n    slug\n\n    articles {\n      id\n      content\n      createdAt\n      isHidden\n      leadImage\n      slug\n      title\n      updatedAt\n\n      author {\n        avatar\n        firstName\n        lastName\n        id\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  fragment publicCategoryWithArticles on PublicCategory {\n    id\n    name\n    slug\n\n    articles {\n      id\n      content\n      createdAt\n      leadImage\n      slug\n      title\n      updatedAt\n\n      author {\n        avatar\n        firstName\n        lastName\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment publicCategoryWithArticles on PublicCategory {\n    id\n    name\n    slug\n\n    articles {\n      id\n      content\n      createdAt\n      leadImage\n      slug\n      title\n      updatedAt\n\n      author {\n        avatar\n        firstName\n        lastName\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query article($filter: ArticleFilterInput!) {\n    article(filter: $filter) {\n      ...article\n    }\n  }\n\n  \n"): (typeof documents)["\n  query article($filter: ArticleFilterInput!) {\n    article(filter: $filter) {\n      ...article\n    }\n  }\n\n  \n"];
+export function graphql(source: "\n  mutation createMessage($createMessageInput: CreateMessageInput!) {\n    createMessage(createMessageInput: $createMessageInput)\n  }\n"): (typeof documents)["\n  mutation createMessage($createMessageInput: CreateMessageInput!) {\n    createMessage(createMessageInput: $createMessageInput)\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query articlesByCategory($grid: ArticlesGridInput) {\n    articles(grid: $grid) {\n      total\n      rows {\n        ...articleInList\n      }\n    }\n  }\n\n  \n"): (typeof documents)["\n  query articlesByCategory($grid: ArticlesGridInput) {\n    articles(grid: $grid) {\n      total\n      rows {\n        ...articleInList\n      }\n    }\n  }\n\n  \n"];
+export function graphql(source: "\n  query publicArticle($filter: ArticleFilterInput!) {\n    publicArticle(filter: $filter) {\n      ...publicArticle\n    }\n  }\n\n  \n"): (typeof documents)["\n  query publicArticle($filter: ArticleFilterInput!) {\n    publicArticle(filter: $filter) {\n      ...publicArticle\n    }\n  }\n\n  \n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query categories {\n    categories {\n      ...category\n    }\n  }\n\n  \n"): (typeof documents)["\n  query categories {\n    categories {\n      ...category\n    }\n  }\n\n  \n"];
+export function graphql(source: "\n  query publicArticlesByCategory($grid: ArticlesGridInput) {\n    publicArticles(grid: $grid) {\n      total\n      rows {\n        ...publicArticleInList\n      }\n    }\n  }\n\n  \n"): (typeof documents)["\n  query publicArticlesByCategory($grid: ArticlesGridInput) {\n    publicArticles(grid: $grid) {\n      total\n      rows {\n        ...publicArticleInList\n      }\n    }\n  }\n\n  \n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query highlightedArticles {\n    highlightedArticles {\n      ...article\n    }\n  }\n\n  \n"): (typeof documents)["\n  query highlightedArticles {\n    highlightedArticles {\n      ...article\n    }\n  }\n\n  \n"];
+export function graphql(source: "\n  query publicCategories {\n    publicCategories {\n      ...publicCategory\n    }\n  }\n\n  \n"): (typeof documents)["\n  query publicCategories {\n    publicCategories {\n      ...publicCategory\n    }\n  }\n\n  \n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query homePageArticles {\n    homePageArticles {\n      ...categoryWithArticles\n    }\n  }\n\n  \n"): (typeof documents)["\n  query homePageArticles {\n    homePageArticles {\n      ...categoryWithArticles\n    }\n  }\n\n  \n"];
+export function graphql(source: "\n  query publicHighlightedArticles {\n    publicHighlightedArticles {\n      ...publicArticle\n    }\n  }\n\n  \n"): (typeof documents)["\n  query publicHighlightedArticles {\n    publicHighlightedArticles {\n      ...publicArticle\n    }\n  }\n\n  \n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query publicHomePageArticles {\n    publicHomePageArticles {\n      ...publicCategoryWithArticles\n    }\n  }\n\n  \n"): (typeof documents)["\n  query publicHomePageArticles {\n    publicHomePageArticles {\n      ...publicCategoryWithArticles\n    }\n  }\n\n  \n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

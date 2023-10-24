@@ -16,7 +16,7 @@ import {
 } from 'react'
 
 import { ArticleFormDialogState } from '@/components/dashboard/ArticlesTable/consts'
-import { useGrid } from '@/context/GridProvider'
+import { useGrid } from '@/context/dashboard/GridProvider'
 import {
   ArticlesGridInput,
   CreateArticleInput,

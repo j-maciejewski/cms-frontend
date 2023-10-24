@@ -1,4 +1,4 @@
-import { InfiniteScrollArticles, ArticlesGroupHeader } from '@/components/portal'
+import { ArticlesGroupHeader, InfiniteScrollArticles, PageWrapper } from '@/components/portal'
 import { ArticlesGridInputFilter } from '@/gql/graphql'
 
 import { fetchArticles } from '../../../../actions'
@@ -21,13 +21,13 @@ export default async function ({ params }: { params: { category: string } }) {
   }
 
   return (
-    <>
+    <PageWrapper>
       <ArticlesGroupHeader slug={categorySlug} />
       <InfiniteScrollArticles
         filter={filter}
-        initialArticles={articlesData.articles.rows}
-        initialItemsCount={articlesData.articles.total}
+        initialArticles={articlesData.publicArticles.rows}
+        initialItemsCount={articlesData.publicArticles.total}
       />
-    </>
+    </PageWrapper>
   )
 }

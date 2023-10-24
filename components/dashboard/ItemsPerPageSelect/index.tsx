@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { ChevronIcon } from '@/components/icons'
-import { useGrid } from '@/context/GridProvider'
+import { useGrid } from '@/context/dashboard'
 import { useOutsideClick } from '@/hooks'
 
 export const ItemsPerPageSelect = ({ options }: { options: number[] }) => {

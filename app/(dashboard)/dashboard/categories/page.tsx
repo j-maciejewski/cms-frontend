@@ -2,9 +2,10 @@
 
 import { useQuery } from '@apollo/client'
 
-import { ErrorMessage, Spinner } from '@/components/dashboard'
+import { ErrorMessage } from '@/components/dashboard'
 import { CategoriesTable } from '@/components/dashboard/CategoriesTable'
-import { GridProvider } from '@/context'
+import { Spinner2Icon } from '@/components/icons'
+import { GridProvider } from '@/context/dashboard'
 import { DashboardCategoriesQuery, DashboardCategoriesQueryVariables } from '@/gql/graphql'
 import { dashboardQueries } from '@/services'
 
@@ -22,7 +23,7 @@ export default function () {
     notifyOnNetworkStatusChange: true,
   })
 
-  if (categoriesLoading) return <Spinner className="m-auto h-16 w-16 animate-infinite-spin text-white" />
+  if (categoriesLoading) return <Spinner2Icon className="m-auto h-16 w-16 animate-infinite-spin text-white" />
 
   if (categoriesError) return <ErrorMessage message={categoriesError.message} />
 

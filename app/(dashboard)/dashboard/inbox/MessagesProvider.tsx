@@ -14,7 +14,7 @@ import {
   useState,
 } from 'react'
 
-import { useGrid } from '@/context/GridProvider'
+import { useGrid } from '@/context/dashboard/GridProvider'
 import { DashboardMessageFragment, DashboardMessagesQuery, Exact, InputMaybe, MessagesGridInput } from '@/gql/graphql'
 
 interface IMessagesContext {

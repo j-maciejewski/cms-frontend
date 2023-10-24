@@ -1,14 +1,16 @@
-import { Article } from '@/components/portal'
-import { ArticleQuery, ArticleQueryVariables } from '@/gql/graphql'
+import { Article, PageWrapper } from '@/components/portal'
+import { PublicArticleQuery, PublicArticleQueryVariables } from '@/gql/graphql'
 import { getClient } from '@/lib/client'
-import { portalQueries } from '@/services'
+import { publicQueries } from '@/services'
 
 export default async function ({ params }: { params: { article: string } }) {
-  // return <div>test</div>
   const articleSlug = params?.article?.toLowerCase()
 
-  const { data: articleData, error: articleError } = await getClient().query<ArticleQuery, ArticleQueryVariables>({
-    query: portalQueries.GET_ARTICLE,
+  const { data: articleData, error: articleError } = await getClient().query<
+    PublicArticleQuery,
+    PublicArticleQueryVariables
+  >({
+    query: publicQueries.PUBLIC_ARTICLE,
     variables: {
       filter: {
         slug: articleSlug,
@@ -20,13 +22,13 @@ export default async function ({ params }: { params: { article: string } }) {
     return <>{JSON.stringify(articleError)}</>
   }
 
-  if (!articleData || !articleData.article) {
+  if (!articleData || !articleData.publicArticle) {
     return <>loading</>
   }
 
   return (
-    <>
-      <Article article={articleData.article} />
-    </>
+    <PageWrapper>
+      <Article article={articleData.publicArticle} />
+    </PageWrapper>
   )
 }

@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
-export const CATEGORY_WITH_ARTICLES_FRAGMENT = gql`
-  fragment categoryWithArticles on Category {
+export const PUBLIC_CATEGORY_WITH_ARTICLES_FRAGMENT = gql`
+  fragment publicCategoryWithArticles on PublicCategory {
     id
     name
     slug
@@ -10,7 +10,6 @@ export const CATEGORY_WITH_ARTICLES_FRAGMENT = gql`
       id
       content
       createdAt
-      isHidden
       leadImage
       slug
       title

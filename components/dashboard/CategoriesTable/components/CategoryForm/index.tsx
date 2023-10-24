@@ -5,13 +5,12 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
 import { useCategories } from '@/app/(dashboard)/dashboard/categories/CategoriesProvider'
-import { PenIcon, XmarkIcon } from '@/components/icons'
+import { PenIcon, Spinner2Icon, XmarkIcon } from '@/components/icons'
 import { DashboardCategoriesQuery, DashboardCategoryFragment } from '@/gql/graphql'
 import { dashboardQueries } from '@/services'
 import { generateSlug } from '@/utils'
 
 import { TextInput } from '../../../FormElements/TextInput'
-import { Spinner } from '../../../Spinner'
 
 interface ICategoryFormInputs {
   name: string
@@ -39,7 +38,8 @@ export const CategoryForm = () => {
 
   if (formDialog.state === 'closed') return null
 
-  if (formDialog.state === 'loading') return <Spinner className="m-auto h-8 w-8 animate-infinite-spin text-white" />
+  if (formDialog.state === 'loading')
+    return <Spinner2Icon className="m-auto h-8 w-8 animate-infinite-spin text-white" />
 
   const categoryData = formDialog.categoryId
     ? (categories.find((category) => category.id === formDialog.categoryId) as DashboardCategoryFragment)
@@ -110,7 +110,7 @@ export const CategoryForm = () => {
     <>
       {(createCategoryLoading || updateCategoryLoading) && (
         <div className="absolute flex h-full w-full items-center justify-center">
-          <Spinner className={twMerge('h-8 w-8 animate-infinite-spin text-white')} />
+          <Spinner2Icon className={twMerge('h-8 w-8 animate-infinite-spin text-white')} />
         </div>
       )}
       <form

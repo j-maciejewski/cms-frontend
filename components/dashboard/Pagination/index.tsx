@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge'
 
-import { useGrid } from '@/context/GridProvider'
+import { useGrid } from '@/context/dashboard'
 import { calcPagination } from '@/utils'
 
 import { ItemsPerPageSelect } from '../ItemsPerPageSelect'
@@ -22,8 +22,7 @@ const PaginationItem = ({
         className={twMerge(
           'flex h-10 min-w-[40px] items-center justify-center border border-gray-200 bg-white px-3 leading-tight dark:border-gray-500 dark:bg-gray-700',
           active ? 'dark:bg-gray-800' : 'dark:bg-gray-700',
-          disabled && 'opacity-70 dark:text-gray-500',
-          active && 'opacity-70',
+          (disabled || active) && 'opacity-70 dark:text-gray-500',
           !disabled &&
             !active &&
             'text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white',

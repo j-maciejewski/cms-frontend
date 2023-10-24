@@ -1,11 +1,14 @@
 'use client'
 
+import { useMutation } from '@apollo/client'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { z } from 'zod'
 
 import { KeyIcon, UserAvatarIcon } from '@/components/icons'
-import { useLogin } from '@/context/LoginProvider'
+import { useLogin } from '@/context/dashboard'
+import { LoginMutation, LoginMutationVariables } from '@/gql/graphql'
+import { dashboardMutations } from '@/services'
 
 import { TextInput } from '../FormElements/TextInput'
 
@@ -19,12 +22,16 @@ export const LoginForm = () => {
   const [errors, setErrors] = useState<Partial<Record<'email' | 'password', string[]>> | null>(null)
   const router = useRouter()
 
+  const [login] = useMutation<LoginMutation, LoginMutationVariables>(dashboardMutations.LOGIN)
+
   const goToResetPasswordPage = () => {
     clearPassword()
     router.push('/reset-password', { scroll: false })
   }
 
-  const handleLogin = () => {
+  const handleLogin = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault()
+
     const result = LoginFormSchema.safeParse(formData)
 
     if (!result.success) {
@@ -38,11 +45,13 @@ export const LoginForm = () => {
       return
     }
 
+    login({ variables: { email: formData.email, password: formData.password } }).then(() => router.push('/dashboard'))
+
     setErrors(null)
   }
 
   return (
-    <>
+    <form onSubmit={handleLogin}>
       <div className="mb-5">
         <TextInput
           Icon={UserAvatarIcon}
@@ -64,9 +73,8 @@ export const LoginForm = () => {
         />
       </div>
       <button
-        type="button"
+        type="submit"
         className="mb-3 w-full rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        onClick={handleLogin}
       >
         Log in
       </button>
@@ -76,6 +84,6 @@ export const LoginForm = () => {
           Reset password
         </button>
       </p>
-    </>
+    </form>
   )
 }

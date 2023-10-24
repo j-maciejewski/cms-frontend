@@ -4,11 +4,11 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
 import { useUsers } from '@/app/(dashboard)/dashboard/users/UsersProvider'
+import { Spinner2Icon } from '@/components/icons'
 import { DashboardUserFragment, DashboardUsersQuery } from '@/gql/graphql'
 import { dashboardQueries } from '@/services'
 
 import { TextInput } from '../../../FormElements/TextInput'
-import { Spinner } from '../../../Spinner'
 
 interface IUserFormInputs {
   firstName: string
@@ -33,7 +33,8 @@ export const UserForm = () => {
 
   if (formDialog.state === 'closed') return null
 
-  if (formDialog.state === 'loading') return <Spinner className="m-auto h-8 w-8 animate-infinite-spin text-white" />
+  if (formDialog.state === 'loading')
+    return <Spinner2Icon className="m-auto h-8 w-8 animate-infinite-spin text-white" />
 
   const userData = formDialog.userId
     ? (users.find((user) => user.id === formDialog.userId) as DashboardUserFragment)
@@ -63,7 +64,7 @@ export const UserForm = () => {
             query: dashboardQueries.USERS,
             data: {
               ...cacheData,
-              users: cacheData.users.map((user) =>
+              users: cacheData.users.rows.map((user) =>
                 user.id === data.updateUser.id ? { ...user, ...data.updateUser } : user,
               ),
             },
@@ -90,7 +91,7 @@ export const UserForm = () => {
             query: dashboardQueries.USERS,
             data: {
               ...cacheData,
-              users: cacheData.users.concat({ ...data.createUser }),
+              users: cacheData.users.rows.concat({ ...data.createUser }),
             },
           })
         },
@@ -102,7 +103,7 @@ export const UserForm = () => {
     <>
       {(createUserLoading || updateUserLoading) && (
         <div className="absolute flex h-full w-full items-center justify-center">
-          <Spinner className={twMerge('h-8 w-8 animate-infinite-spin text-white')} />
+          <Spinner2Icon className={twMerge('h-8 w-8 animate-infinite-spin text-white')} />
         </div>
       )}
       <form

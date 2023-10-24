@@ -1,11 +1,10 @@
 import { gql } from '@apollo/client'
 
-export const ARTICLE_FRAGMENT = gql`
-  fragment article on Article {
+export const PUBLIC_ARTICLE_FRAGMENT = gql`
+  fragment publicArticle on PublicArticle {
     id
     content
     createdAt
-    isHidden
     leadImage
     slug
     title

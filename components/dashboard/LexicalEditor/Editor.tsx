@@ -18,7 +18,6 @@ import useLexicalEditable from '@lexical/react/useLexicalEditable'
 import { $createParagraphNode, $createTextNode, $getRoot, $insertNodes } from 'lexical'
 import { debounce } from 'lodash'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Prompt } from 'react-router'
 
 // import { saveToEditorsIDB } from '@/utils';
 import { EMPTY_EDITOR_HTML, RESET_EDITOR_KEYWORD } from '@/consts'
@@ -289,7 +288,6 @@ export default function Editor(props: ILexicalEditor): JSX.Element {
         {(isCharLimit || isCharLimitUtf8) && (
           <CharacterLimitPlugin charset={isCharLimit ? 'UTF-16' : 'UTF-8'} maxLength={5} />
         )}
-        <div>{showTableOfContents && <TableOfContentsPlugin />}</div>
         {shouldUseLexicalContextMenu && <ContextMenuPlugin />}
       </div>
       {showTreeView && <TreeViewPlugin />}

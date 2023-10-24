@@ -3,7 +3,7 @@
 import { twMerge } from 'tailwind-merge'
 
 import { Grid2x2Icon, Grid3x3Icon, Grid4x4Icon } from '@/components/icons'
-import { DisplayModes, useDisplayMode } from '@/context/DisplayModeProvider'
+import { DisplayModes, useDisplayMode } from '@/context/portal'
 
 export const DisplayModeButtons = () => {
   const { displayMode, changeDisplayMode } = useDisplayMode()

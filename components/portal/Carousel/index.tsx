@@ -6,10 +6,10 @@ import { Carousel as RRCarousel } from 'react-responsive-carousel'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
 import { IMAGES_URL } from '@/consts'
-import { ArticleFragment } from '@/gql/graphql'
+import { PublicArticleFragment } from '@/gql/graphql'
 
 interface ICarousel {
-  articles: ArticleFragment[]
+  articles: PublicArticleFragment[]
 }
 
 export class Carousel extends Component<ICarousel> {

@@ -1,5 +1,5 @@
 import { fetchArticles } from '@/actions'
-import { ArticlesGroupHeader, DisplayModeButtons, InfiniteScrollArticles } from '@/components/portal'
+import { ArticlesGroupHeader, InfiniteScrollArticles, PageWrapper } from '@/components/portal'
 import { ArticlesGridInputFilter } from '@/gql/graphql'
 
 export default async function ({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
@@ -20,22 +20,21 @@ export default async function ({ searchParams }: { searchParams?: { [key: string
   }
 
   return (
-    <>
-      {articlesData.articles.total === 0 ? (
-        <div className="flex justify-between">
-          <h3>No articles found for: {searchQuery}</h3>
-          <DisplayModeButtons />
-        </div>
+    <PageWrapper>
+      {articlesData.publicArticles.total === 0 ? (
+        <>
+          <ArticlesGroupHeader label={`No articles found for: ${searchQuery}`} />
+        </>
       ) : (
         <>
-          <ArticlesGroupHeader label={`Found ${articlesData.articles.total} articles for: ${searchQuery}`} />
+          <ArticlesGroupHeader label={`Found ${articlesData.publicArticles.total} articles for: ${searchQuery}`} />
           <InfiniteScrollArticles
             filter={filter}
-            initialArticles={articlesData.articles.rows}
-            initialItemsCount={articlesData.articles.total}
+            initialArticles={articlesData.publicArticles.rows}
+            initialItemsCount={articlesData.publicArticles.total}
           />
         </>
       )}
-    </>
+    </PageWrapper>
   )
 }

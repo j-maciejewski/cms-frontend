@@ -2,8 +2,9 @@
 
 import { useQuery } from '@apollo/client'
 
-import { ErrorMessage, MessagesTable, Spinner } from '@/components/dashboard'
-import { GridProvider } from '@/context'
+import { ErrorMessage, MessagesTable } from '@/components/dashboard'
+import { Spinner2Icon } from '@/components/icons'
+import { GridProvider } from '@/context/dashboard'
 import { DashboardMessagesQuery, DashboardMessagesQueryVariables, MessagesGridInput } from '@/gql/graphql'
 import { dashboardQueries } from '@/services'
 import { getGrid } from '@/utils'
@@ -25,7 +26,7 @@ export default function ({ searchParams }: { searchParams?: { [key: string]: str
     notifyOnNetworkStatusChange: true,
   })
 
-  if (messagesLoading) return <Spinner className="m-auto h-16 w-16 animate-infinite-spin text-white" />
+  if (messagesLoading) return <Spinner2Icon className="m-auto h-16 w-16 animate-infinite-spin text-white" />
 
   if (messagesError) return <ErrorMessage message={messagesError.message} />
 

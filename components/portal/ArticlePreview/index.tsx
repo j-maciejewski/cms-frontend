@@ -6,13 +6,13 @@ import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 
 import { IMAGES_URL } from '@/consts'
-import { DisplayModes, useDisplayMode } from '@/context/DisplayModeProvider'
-import { ArticleInListFragment } from '@/gql/graphql'
+import { DisplayModes, useDisplayMode } from '@/context/portal'
+import { PublicArticleInListFragment } from '@/gql/graphql'
 
 import { ImageWithFallback } from '../ImageWithFallback'
 
 interface IArticlePreview {
-  article: ArticleInListFragment
+  article: PublicArticleInListFragment
 }
 
 export const ArticlePreview = ({ article }: IArticlePreview) => {
@@ -22,7 +22,7 @@ export const ArticlePreview = ({ article }: IArticlePreview) => {
   dayjs.extend(relativeTime)
 
   return (
-    <div className="flex flex-col border-b-2 border-primary pb-2">
+    <div className="flex flex-col border-b-2 border-primary/75 pb-2">
       <Link href={`/article/${slug}`} className="mx-auto block">
         <div className="aspect-[16/9] overflow-hidden">
           <ImageWithFallback

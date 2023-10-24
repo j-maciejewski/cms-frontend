@@ -1,13 +1,13 @@
 import { gql } from '@apollo/client'
 
-import { ARTICLE_FRAGMENT } from '../fragments'
+import { PUBLIC_ARTICLE_FRAGMENT } from '../fragments'
 
-export const GET_HIGHLIGHTED_ARTICLES = gql`
-  query highlightedArticles {
-    highlightedArticles {
-      ...article
+export const PUBLIC_HIGHLIGHTED_ARTICLES = gql`
+  query publicHighlightedArticles {
+    publicHighlightedArticles {
+      ...publicArticle
     }
   }
 
-  ${ARTICLE_FRAGMENT}
+  ${PUBLIC_ARTICLE_FRAGMENT}
 `

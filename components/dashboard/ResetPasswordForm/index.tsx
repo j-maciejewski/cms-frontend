@@ -1,11 +1,11 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { z } from 'zod'
 
 import { UserAvatarIcon } from '@/components/icons'
-import { useLogin } from '@/context/LoginProvider'
+import { useLogin } from '@/context/dashboard'
 
 import { TextInput } from '../FormElements/TextInput'
 
@@ -23,7 +23,9 @@ export const ResetPasswordForm = () => {
     router.push('/login', { scroll: false })
   }
 
-  const handleResetPassword = () => {
+  const handleResetPassword = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault()
+
     const result = ResetPasswordFormSchema.safeParse(formData)
 
     if (!result.success) {
@@ -48,24 +50,26 @@ export const ResetPasswordForm = () => {
         </div>
       ) : (
         <>
-          <div className="mb-5">
-            <TextInput
-              Icon={UserAvatarIcon}
-              errors={errors?.email}
-              inputProps={{
-                name: 'email',
-                onChange: handleChange,
-                value: formData.email,
-                placeholder: 'Enter email...',
-              }}
-            />
-          </div>
-          <button
-            className="mb-3 w-full rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-            onClick={handleResetPassword}
-          >
-            Reset password
-          </button>
+          <form onSubmit={handleResetPassword}>
+            <div className="mb-5">
+              <TextInput
+                Icon={UserAvatarIcon}
+                errors={errors?.email}
+                inputProps={{
+                  name: 'email',
+                  onChange: handleChange,
+                  value: formData.email,
+                  placeholder: 'Enter email...',
+                }}
+              />
+            </div>
+            <button
+              type="submit"
+              className="mb-3 w-full rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            >
+              Reset password
+            </button>
+          </form>
         </>
       )}
       <p className="text-center text-xs">
