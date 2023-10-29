@@ -1,1 +1,1 @@
-export { fetchArticles } from './fetchArticles'
+export { fetchPublicArticles } from './fetchPublicArticles'

@@ -45,27 +45,16 @@ interface IUsersContext {
     CreateUserMutation,
     Exact<{
       createUserInput: CreateUserInput
-    }>,
-    DefaultContext,
-    ApolloCache<any>
+    }>
   >
   updateUserTuple: MutationTuple<
     UpdateUserMutation,
     Exact<{
       id: string
       updateUserInput: UpdateUserInput
-    }>,
-    DefaultContext,
-    ApolloCache<any>
+    }>
   >
-  deleteUserTuple: MutationTuple<
-    DeleteUserMutation,
-    Exact<{
-      id: string
-    }>,
-    DefaultContext,
-    ApolloCache<any>
-  >
+  deleteUserTuple: MutationTuple<DeleteUserMutation, Exact<{ id: string }>>
   formDialog: UserFormDialogState
   setFormDialog: Dispatch<SetStateAction<UserFormDialogState>>
   formDialogRef: RefObject<HTMLDialogElement>

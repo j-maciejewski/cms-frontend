@@ -16,7 +16,8 @@ const documents = {
     "\n  fragment dashboardArticle on Article {\n    id\n    title\n    slug\n    leadImage\n    content\n    isHidden\n    isHighlighted\n    author {\n      id\n      firstName\n      lastName\n    }\n    category {\n      id\n      name\n      slug\n    }\n  }\n": types.DashboardArticleFragmentDoc,
     "\n  fragment dashboardArticleInList on Article {\n    id\n    title\n    slug\n    createdAt\n    isHidden\n    isHighlighted\n    author {\n      id\n      firstName\n      lastName\n    }\n    category {\n      id\n      name\n      slug\n    }\n  }\n": types.DashboardArticleInListFragmentDoc,
     "\n  fragment basicDashboardCategory on Category {\n    id\n    name\n  }\n": types.BasicDashboardCategoryFragmentDoc,
-    "\n  fragment dashboardCategory on Category {\n    id\n    name\n    slug\n  }\n": types.DashboardCategoryFragmentDoc,
+    "\n  fragment dashboardCategory on Category {\n    id\n    name\n    slug\n    isHidden\n  }\n": types.DashboardCategoryFragmentDoc,
+    "\n  fragment dashboardCategoryInList on Category {\n    id\n    name\n    slug\n    isHidden\n    articlesCount\n  }\n": types.DashboardCategoryInListFragmentDoc,
     "\n  fragment dashboardMessage on Message {\n    id\n    name\n    email\n    content\n    replySent\n  }\n": types.DashboardMessageFragmentDoc,
     "\n  fragment dashboardUser on User {\n    id\n    email\n    firstName\n    lastName\n    avatar\n    role\n    isSuspended\n    isAnonymous\n  }\n": types.DashboardUserFragmentDoc,
     "\n  mutation createArticle($createArticleInput: CreateArticleInput!) {\n    createArticle(createArticleInput: $createArticleInput) {\n      ...dashboardArticle\n    }\n  }\n\n  \n": types.CreateArticleDocument,
@@ -33,7 +34,7 @@ const documents = {
     "\n  query activeUser {\n    activeUser {\n      id\n      firstName\n      lastName\n      email\n      avatar\n    }\n  }\n": types.ActiveUserDocument,
     "\n  query dashboardArticles($grid: ArticlesGridInput) {\n    articles(grid: $grid) {\n      total\n      rows {\n        ...dashboardArticleInList\n      }\n    }\n  }\n\n  \n": types.DashboardArticlesDocument,
     "\n  query basicDashboardCategories {\n    categories {\n      ...basicDashboardCategory\n    }\n  }\n\n  \n": types.BasicDashboardCategoriesDocument,
-    "\n  query dashboardCategories {\n    categories {\n      ...dashboardCategory\n      articlesCount\n    }\n  }\n\n  \n": types.DashboardCategoriesDocument,
+    "\n  query dashboardCategories {\n    categories {\n      ...dashboardCategoryInList\n    }\n  }\n\n  \n": types.DashboardCategoriesDocument,
     "\n  query dashboardCategory($id: String!) {\n    category(id: $id) {\n      ...dashboardCategory\n      articlesCount\n    }\n  }\n\n  \n": types.DashboardCategoryDocument,
     "\n  query dashboardMessages($grid: MessagesGridInput) {\n    messages(grid: $grid) {\n      total\n      rows {\n        ...dashboardMessage\n      }\n    }\n  }\n\n  \n": types.DashboardMessagesDocument,
     "\n  query dashboardUsers($grid: UsersGridInput) {\n    users(grid: $grid) {\n      total\n      rows {\n        ...dashboardUser\n      }\n    }\n  }\n\n  \n": types.DashboardUsersDocument,
@@ -78,7 +79,11 @@ export function graphql(source: "\n  fragment basicDashboardCategory on Category
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment dashboardCategory on Category {\n    id\n    name\n    slug\n  }\n"): (typeof documents)["\n  fragment dashboardCategory on Category {\n    id\n    name\n    slug\n  }\n"];
+export function graphql(source: "\n  fragment dashboardCategory on Category {\n    id\n    name\n    slug\n    isHidden\n  }\n"): (typeof documents)["\n  fragment dashboardCategory on Category {\n    id\n    name\n    slug\n    isHidden\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment dashboardCategoryInList on Category {\n    id\n    name\n    slug\n    isHidden\n    articlesCount\n  }\n"): (typeof documents)["\n  fragment dashboardCategoryInList on Category {\n    id\n    name\n    slug\n    isHidden\n    articlesCount\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -146,7 +151,7 @@ export function graphql(source: "\n  query basicDashboardCategories {\n    categ
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query dashboardCategories {\n    categories {\n      ...dashboardCategory\n      articlesCount\n    }\n  }\n\n  \n"): (typeof documents)["\n  query dashboardCategories {\n    categories {\n      ...dashboardCategory\n      articlesCount\n    }\n  }\n\n  \n"];
+export function graphql(source: "\n  query dashboardCategories {\n    categories {\n      ...dashboardCategoryInList\n    }\n  }\n\n  \n"): (typeof documents)["\n  query dashboardCategories {\n    categories {\n      ...dashboardCategoryInList\n    }\n  }\n\n  \n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

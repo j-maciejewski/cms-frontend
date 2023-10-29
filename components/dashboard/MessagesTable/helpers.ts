@@ -11,5 +11,8 @@ export const dataRows = (messagesList: DashboardMessageFragment[]): Partial<Reco
       name,
       email,
       content,
+      management: {
+        id,
+      },
     }
   })

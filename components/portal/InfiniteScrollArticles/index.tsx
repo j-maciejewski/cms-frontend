@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { twMerge } from 'tailwind-merge'
 
-import { fetchArticles } from '@/actions/fetchArticles'
+import { fetchPublicArticles } from '@/actions'
 import { SpinnerIcon } from '@/components/icons'
 import { DisplayModes, useDisplayMode } from '@/context/portal'
 import { ArticlesGridInputFilter, PublicArticlesByCategoryQuery } from '@/gql/graphql'
@@ -26,7 +26,7 @@ export const InfiniteScrollArticles = ({ filter, initialArticles, initialItemsCo
 
   async function loadMoreArticles() {
     const nextPage = page + 1
-    const articles = await fetchArticles({ filter, page: nextPage })
+    const articles = await fetchPublicArticles({ filter, page: nextPage })
 
     if (articles?.data?.publicArticles) {
       setPage(nextPage)

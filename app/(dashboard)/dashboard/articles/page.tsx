@@ -3,12 +3,12 @@
 import { useQuery } from '@apollo/client'
 
 import { ArticlesTable, ErrorMessage } from '@/components/dashboard'
-import { Spinner2Icon } from '@/components/icons'
 import { GridProvider } from '@/context/dashboard'
 import { ArticlesGridInput, DashboardArticlesQuery, DashboardArticlesQueryVariables } from '@/gql/graphql'
 import { dashboardQueries } from '@/services'
 import { getGrid } from '@/utils'
 
+import Loading from '../../loading'
 import { ArticlesProvider } from './ArticlesProvider'
 
 export const dynamic = 'force-dynamic'
@@ -26,7 +26,7 @@ export default function ({ searchParams }: { searchParams?: { [key: string]: str
     notifyOnNetworkStatusChange: true,
   })
 
-  if (articlesLoading) return <Spinner2Icon className="m-auto h-16 w-16 animate-infinite-spin text-white" />
+  if (articlesLoading) return <Loading />
 
   if (articlesError) return <ErrorMessage message={articlesError.message} />
 

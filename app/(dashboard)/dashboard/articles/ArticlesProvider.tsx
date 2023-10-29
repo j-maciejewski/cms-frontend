@@ -46,26 +46,20 @@ interface IArticlesContext {
     CreateArticleMutation,
     Exact<{
       createArticleInput: CreateArticleInput
-    }>,
-    DefaultContext,
-    ApolloCache<any>
+    }>
   >
   updateArticleTuple: MutationTuple<
     UpdateArticleMutation,
     Exact<{
       id: string
       updateArticleInput: UpdateArticleInput
-    }>,
-    DefaultContext,
-    ApolloCache<any>
+    }>
   >
   deleteArticleTuple: MutationTuple<
     DeleteArticleMutation,
     Exact<{
       id: string
-    }>,
-    DefaultContext,
-    ApolloCache<any>
+    }>
   >
   formDialog: ArticleFormDialogState
   setFormDialog: Dispatch<SetStateAction<ArticleFormDialogState>>
@@ -136,7 +130,7 @@ const ArticlesProvider = (props: IArticlesProviderProps) => {
       setFormDialog,
       formDialogRef,
     }),
-    [articles, searchText, filtersShown, formDialog, handleRefetch],
+    [articles, searchText, filtersShown, formDialog, handleRefetch, grid],
   )
 
   return <ArticlesContext.Provider value={value} {...rest} />

@@ -12,7 +12,7 @@ interface IShareButton {
 export const ShareButton = ({ label }: IShareButton) => {
   const dialogRef = useRef<HTMLDialogElement>(null)
 
-  const articleUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`
+  const getArticleUrl = () => `${window.location.protocol}//${window.location.host}${window.location.pathname}`
 
   const toggleDialog = () => {
     if (!dialogRef.current) return
@@ -31,18 +31,18 @@ export const ShareButton = ({ label }: IShareButton) => {
   const wrapperRef = useOutsideClick<HTMLDivElement>(closeDialog)
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(articleUrl)
+    navigator.clipboard.writeText(getArticleUrl())
     closeDialog()
   }
 
   const shareTwitter = () => {
-    const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${label} ${articleUrl}`)}`
+    const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${label} ${getArticleUrl()}`)}`
     window.open(twitterShareUrl, '_blank')
     closeDialog()
   }
 
   const shareFB = () => {
-    const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(articleUrl)}`
+    const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getArticleUrl())}`
     window.open(facebookShareUrl, '_blank')
     closeDialog()
   }

@@ -1,14 +1,13 @@
 import { gql } from '@apollo/client'
 
-import { CATEGORY_FRAGMENT } from '../fragments'
+import { CATEGORY_IN_LIST_FRAGMENT } from '../fragments'
 
 export const CATEGORIES = gql`
   query dashboardCategories {
     categories {
-      ...dashboardCategory
-      articlesCount
+      ...dashboardCategoryInList
     }
   }
 
-  ${CATEGORY_FRAGMENT}
+  ${CATEGORY_IN_LIST_FRAGMENT}
 `

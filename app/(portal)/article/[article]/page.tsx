@@ -1,15 +1,20 @@
+import { redirect } from 'next/navigation'
+
 import { Article, PageWrapper } from '@/components/portal'
-import { PublicArticleQuery, PublicArticleQueryVariables } from '@/gql/graphql'
+import { PublicArticle, PublicArticleQuery, PublicArticleQueryVariables } from '@/gql/graphql'
 import { getClient } from '@/lib/client'
 import { publicQueries } from '@/services'
+
+import Loading from '../../loading'
 
 export default async function ({ params }: { params: { article: string } }) {
   const articleSlug = params?.article?.toLowerCase()
 
-  const { data: articleData, error: articleError } = await getClient().query<
-    PublicArticleQuery,
-    PublicArticleQueryVariables
-  >({
+  const {
+    data: articleData,
+    loading: articleLoading,
+    error: articleError,
+  } = await getClient().query<PublicArticleQuery, PublicArticleQueryVariables>({
     query: publicQueries.PUBLIC_ARTICLE,
     variables: {
       filter: {
@@ -18,17 +23,17 @@ export default async function ({ params }: { params: { article: string } }) {
     },
   })
 
-  if (articleError) {
-    return <>{JSON.stringify(articleError)}</>
+  if (articleError || (!articleLoading && !articleData.publicArticle)) {
+    redirect('/')
   }
 
-  if (!articleData || !articleData.publicArticle) {
-    return <>loading</>
+  if (articleLoading) {
+    return <Loading />
   }
 
   return (
     <PageWrapper>
-      <Article article={articleData.publicArticle} />
+      <Article article={articleData.publicArticle as PublicArticle} />
     </PageWrapper>
   )
 }

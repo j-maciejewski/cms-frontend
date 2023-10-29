@@ -63,7 +63,7 @@ export function LexicalEditor(props: ILexicalEditor): JSX.Element {
     <SettingsContext>
       <LexicalComposer initialConfig={initialConfig}>
         <SharedHistoryContext>
-          <div className="editor-shell">
+          <div className="editor-shell text-white">
             <Editor
               value={value}
               onChange={onChange}

@@ -41,7 +41,7 @@ export const ColumnsSelector = ({ columns, toggleColumn }: IColumnsSelector) => 
               <li key={idx} className="flex items-center whitespace-nowrap px-3">
                 <input
                   type="checkbox"
-                  className="mr-1 inline-flex hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="mr-2 inline-flex hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                   checked={!column.isHidden}
                   onChange={() => toggleColumn(column.key)}
                 />

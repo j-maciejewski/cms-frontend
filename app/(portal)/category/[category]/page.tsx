@@ -1,7 +1,7 @@
 import { ArticlesGroupHeader, InfiniteScrollArticles, PageWrapper } from '@/components/portal'
 import { ArticlesGridInputFilter } from '@/gql/graphql'
 
-import { fetchArticles } from '../../../../actions'
+import { fetchPublicArticles } from '../../../../actions'
 
 export default async function ({ params }: { params: { category: string } }) {
   const categorySlug = params?.category?.toLowerCase()
@@ -10,7 +10,7 @@ export default async function ({ params }: { params: { category: string } }) {
     categorySlug,
   }
 
-  const { data: articlesData, error: articlesError } = await fetchArticles({ filter })
+  const { data: articlesData, error: articlesError } = await fetchPublicArticles({ filter })
 
   if (articlesError) {
     return <>{JSON.stringify(articlesError)}</>

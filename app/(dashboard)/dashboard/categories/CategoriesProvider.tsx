@@ -20,7 +20,7 @@ import {
   CreateCategoryMutation,
   CreateCategoryMutationVariables,
   DashboardCategoriesQuery,
-  DashboardCategoryFragment,
+  DashboardCategoryInListFragment,
   DeleteCategoryMutation,
   DeleteCategoryMutationVariables,
   Exact,
@@ -32,7 +32,7 @@ import { useDialogForm } from '@/hooks'
 import { dashboardMutations } from '@/services'
 
 interface ICategoriesContext {
-  categories: DashboardCategoryFragment[]
+  categories: DashboardCategoryInListFragment[]
   refetchCategories: () => Promise<ApolloQueryResult<DashboardCategoriesQuery>>
   searchText: string
   handleChangeSearchText: (evt: ChangeEvent<HTMLInputElement>) => void
@@ -42,26 +42,20 @@ interface ICategoriesContext {
     CreateCategoryMutation,
     Exact<{
       createCategoryInput: CreateCategoryInput
-    }>,
-    DefaultContext,
-    ApolloCache<any>
+    }>
   >
   updateCategoryTuple: MutationTuple<
     UpdateCategoryMutation,
     Exact<{
       id: string
       updateCategoryInput: UpdateCategoryInput
-    }>,
-    DefaultContext,
-    ApolloCache<any>
+    }>
   >
   deleteCategoryTuple: MutationTuple<
     DeleteCategoryMutation,
     Exact<{
       id: string
-    }>,
-    DefaultContext,
-    ApolloCache<any>
+    }>
   >
   formDialog: CategoryFormDialogState
   setFormDialog: Dispatch<SetStateAction<CategoryFormDialogState>>
@@ -69,7 +63,7 @@ interface ICategoriesContext {
 }
 
 interface ICategoriesProviderProps {
-  categories: DashboardCategoryFragment[]
+  categories: DashboardCategoryInListFragment[]
   refetchCategories: () => Promise<ApolloQueryResult<DashboardCategoriesQuery>>
   children: ReactNode
 }

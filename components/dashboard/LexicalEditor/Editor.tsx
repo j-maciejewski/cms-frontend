@@ -6,18 +6,19 @@ import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin'
 import { ClearEditorPlugin } from '@lexical/react/LexicalClearEditorPlugin'
 import LexicalClickableLinkPlugin from '@lexical/react/LexicalClickableLinkPlugin'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
 import { HashtagPlugin } from '@lexical/react/LexicalHashtagPlugin'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
-import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin'
 import useLexicalEditable from '@lexical/react/useLexicalEditable'
 import { $createParagraphNode, $createTextNode, $getRoot, $insertNodes } from 'lexical'
 import { debounce } from 'lodash'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 // import { saveToEditorsIDB } from '@/utils';
 import { EMPTY_EDITOR_HTML, RESET_EDITOR_KEYWORD } from '@/consts'
@@ -40,7 +41,6 @@ import ToolbarPlugin from './plugins/ToolbarPlugin'
 import TreeViewPlugin from './plugins/TreeViewPlugin'
 import { EditorContainer, EditorScroller, Wrapper } from './styled'
 import PlaygroundEditorTheme from './themes/PlaygroundEditorTheme'
-import ContentEditable from './ui/ContentEditable'
 import Placeholder from './ui/Placeholder'
 import { CAN_USE_DOM } from './utils/canUseDOM'
 
@@ -245,44 +245,31 @@ export default function Editor(props: ILexicalEditor): JSX.Element {
         <HashtagPlugin />
         <AutoLinkPlugin />
         <OnChangePlugin onChange={handleChange} />
-        {isRichText ? (
+        <HistoryPlugin externalHistoryState={historyState} />
+        <RichTextPlugin
+          contentEditable={
+            <EditorScroller isEditing={isEditing}>
+              <EditorContainer isEditing={isEditing} isDisabled={isDisabled} data-testid={dataTestId} ref={onRef}>
+                <ContentEditable className={twMerge('ContentEditable__root', isEditing && 'min-h-[250px]')} />
+              </EditorContainer>
+            </EditorScroller>
+          }
+          placeholder={placeholder}
+          ErrorBoundary={LexicalErrorBoundary}
+        />
+        <ListPlugin />
+        <CheckListPlugin />
+        <ListMaxIndentLevelPlugin maxDepth={3} />
+        <ImagesPlugin uploadImages={uploadImages} />
+        {/* <InlineImagePlugin uploadImages={uploadImages} /> */}
+        <LinkPlugin />
+        {!isEditable && <LexicalClickableLinkPlugin />}
+        <TabFocusPlugin />
+        <TabIndentationPlugin />
+        {floatingAnchorElem && !isSmallWidthViewport && (
           <>
-            <HistoryPlugin externalHistoryState={historyState} />
-            <RichTextPlugin
-              contentEditable={
-                <EditorScroller isEditing={isEditing}>
-                  <EditorContainer isEditing={isEditing} isDisabled={isDisabled} data-testid={dataTestId} ref={onRef}>
-                    <ContentEditable isEditing={isEditing} />
-                  </EditorContainer>
-                </EditorScroller>
-              }
-              placeholder={placeholder}
-              ErrorBoundary={LexicalErrorBoundary}
-            />
-            <ListPlugin />
-            <CheckListPlugin />
-            <ListMaxIndentLevelPlugin maxDepth={3} />
-            <ImagesPlugin uploadImages={uploadImages} />
-            {/* <InlineImagePlugin uploadImages={uploadImages} /> */}
-            <LinkPlugin />
-            {!isEditable && <LexicalClickableLinkPlugin />}
-            <TabFocusPlugin />
-            <TabIndentationPlugin />
-            {floatingAnchorElem && !isSmallWidthViewport && (
-              <>
-                <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
-                <FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
-              </>
-            )}
-          </>
-        ) : (
-          <>
-            <PlainTextPlugin
-              contentEditable={<ContentEditable editable={isEditing} />}
-              placeholder={placeholder}
-              ErrorBoundary={LexicalErrorBoundary}
-            />
-            <HistoryPlugin externalHistoryState={historyState} />
+            <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
+            <FloatingLinkEditorPlugin anchorElem={floatingAnchorElem} />
           </>
         )}
         {(isCharLimit || isCharLimitUtf8) && (

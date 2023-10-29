@@ -1,22 +1,31 @@
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useMemo } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 import { useSidebar } from '@/context/dashboard'
 
-interface ILinkItem {
+interface ISidebarItem {
   href: string
   name: string
   badge?: string
   Icon: any
 }
 
-export const SidebarItem = ({ href, name, badge, Icon }: ILinkItem) => {
+export const SidebarItem = ({ href, name, badge, Icon }: ISidebarItem) => {
   const { isSidebarOpen } = useSidebar()
+  const pathname = usePathname()
+
+  const isActive = useMemo(() => pathname === href, [pathname])
 
   return (
     <li className="grid h-10 place-items-stretch">
       <Link
         href={href}
-        className="group flex items-center rounded-lg p-2 text-gray-900 focus:bg-gray-100/50 dark:text-white dark:hover:bg-gray-900/50 dark:focus:bg-gray-900/50 dark:focus:outline-none"
+        className={twMerge(
+          'group flex items-center rounded-lg p-2 text-gray-900 focus:bg-gray-300/50 dark:text-white dark:hover:bg-gray-900/50 dark:focus:bg-gray-900/50 dark:focus:outline-none',
+          isActive && 'bg-gray-300/75 dark:bg-gray-900/50',
+        )}
       >
         <div className="relative">
           <Icon className="h-5 w-5 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-300 dark:group-hover:text-white" />

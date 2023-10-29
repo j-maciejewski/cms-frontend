@@ -3,4 +3,5 @@ export enum MessagesTableHeadersKeys {
   NAME = 'name',
   EMAIL = 'email',
   CONTENT = 'content',
+  MANAGEMENT = 'management',
 }

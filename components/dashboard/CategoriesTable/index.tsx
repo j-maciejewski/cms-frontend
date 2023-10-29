@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react'
 import { useCategories } from '@/app/(dashboard)/dashboard/categories/CategoriesProvider'
 import { PlusIcon } from '@/components/icons'
 
+import { Dialog } from '../Dialog'
 import { Pagination } from '../Pagination'
 import { Table } from '../Table'
 import { CategoryForm } from './components'
@@ -47,9 +48,7 @@ export const CategoriesTable = () => {
       />
       <Pagination />
 
-      <dialog ref={formDialogRef} className="rounded-lg">
-        {formDialog.state === 'open' && <CategoryForm />}
-      </dialog>
+      <Dialog ref={formDialogRef}>{formDialog.state === 'open' && <CategoryForm />}</Dialog>
     </>
   )
 }

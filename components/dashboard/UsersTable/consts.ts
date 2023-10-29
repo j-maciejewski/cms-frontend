@@ -6,6 +6,7 @@ export enum UsersTableHeadersKeys {
   ROLE = 'role',
   IS_SUSPENDED = 'isSuspended',
   IS_ANONYMOUS = 'isAnonymous',
+  MANAGEMENT = 'management',
 }
 
 export type UserFormDialogState =

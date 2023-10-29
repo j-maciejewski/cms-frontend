@@ -3,22 +3,53 @@ import { useMemo } from 'react'
 import { toast } from 'react-toastify'
 
 import { useArticles } from '@/app/(dashboard)/dashboard/articles/ArticlesProvider'
-import { PenIcon, TrashIcon } from '@/components/icons'
+import { EmptyStarIcon, EyeIcon, EyeSlashIcon, GlobeIcon, PenIcon, StarIcon, TrashIcon } from '@/components/icons'
 import { defaultNotifyOptions } from '@/consts'
-import { DashboardCategoriesQuery, DashboardCategoriesQueryVariables } from '@/gql/graphql'
+import { DashboardCategoriesQuery, DashboardCategoriesQueryVariables, UpdateArticleInput } from '@/gql/graphql'
 import { dashboardQueries } from '@/services'
 import { FilterOperators, FilterTypes } from '@/utils'
 
+import { BooleanCell, OptionsCell } from '../Table/components'
 import { ITableColumn, ITableFilter } from '../Table/types'
 import { ArticlesTableHeadersKeys } from './consts'
 
 export const useColumns = () => {
-  const { ID, TITLE, AUTHOR, CATEGORY } = ArticlesTableHeadersKeys
+  const { ID, TITLE, SLUG, AUTHOR, IS_HIDDEN, IS_HIGHLIGHTED, CATEGORY, MANAGEMENT } = ArticlesTableHeadersKeys
   const {
     refetchArticles,
     setFormDialog,
-    deleteArticleTuple: [deleteArticle, { loading }],
+    updateArticleTuple: [updateArticle, { loading: updateArticleLoading }],
+    deleteArticleTuple: [deleteArticle, { loading: deleteArticleLoading }],
   } = useArticles()
+
+  const handleUpdate = (id: string, input: UpdateArticleInput) => {
+    const notificationId = toast.loading('Updaing article...', defaultNotifyOptions)
+
+    updateArticle({
+      variables: {
+        id,
+        updateArticleInput: input,
+      },
+      update: (cache, { data }) => {
+        if (!data?.updateArticle) return
+
+        refetchArticles()
+        toast.update(notificationId, {
+          render: 'Article has been updated',
+          type: 'success',
+          isLoading: false,
+          ...defaultNotifyOptions,
+        })
+      },
+    }).catch(() =>
+      toast.update(notificationId, {
+        render: 'There was an error while updating article',
+        type: 'error',
+        isLoading: false,
+        ...defaultNotifyOptions,
+      }),
+    )
+  }
 
   const handleDelete = (id: string) => {
     if (!window.confirm('Confirm deleting category')) return
@@ -48,51 +79,132 @@ export const useColumns = () => {
     )
   }
 
+  const handleGoToPage = (slug: string) => {
+    window.open('http://localhost:3000/article/' + slug, '_blank')
+  }
+
   const columns: ITableColumn[] = useMemo(
     () => [
       {
         title: 'Title',
         key: TITLE,
         dataIndex: TITLE,
-        isTextIndexed: true,
         render: (title: string) => (
-          <p className="whitespace-nowrap font-medium text-gray-800 dark:text-white">{title}</p>
+          <p
+            className="overflow-hidden font-medium text-gray-800 dark:text-white"
+            style={{
+              WebkitLineClamp: '2',
+              WebkitBoxOrient: 'vertical',
+              display: '-webkit-box',
+              // @ts-ignore
+              textWrap: 'balance',
+            }}
+          >
+            {title}
+          </p>
         ),
+      },
+      {
+        title: 'Slug',
+        key: SLUG,
+        dataIndex: SLUG,
+        isHidden: true,
       },
       {
         title: 'Author',
         key: AUTHOR,
         dataIndex: AUTHOR,
-        isTextIndexed: true,
+      },
+      {
+        title: 'Is hidden',
+        dataIndex: IS_HIDDEN,
+        key: IS_HIDDEN,
+        render: BooleanCell,
+      },
+      {
+        title: 'Is highlighted',
+        dataIndex: IS_HIGHLIGHTED,
+        key: IS_HIGHLIGHTED,
+        render: BooleanCell,
       },
       {
         title: 'Category',
         key: CATEGORY,
         dataIndex: CATEGORY,
-        isTextIndexed: true,
         isHidden: true,
       },
       {
         key: 'MANAGEMENT',
-        dataIndex: ID,
-        render: (id: string) => (
-          <div className="flex w-min gap-2">
-            <button
-              className="inline-flex items-center rounded-lg bg-blue-500 p-2 text-sm text-gray-300 hover:bg-blue-600"
-              onClick={() => setFormDialog({ state: 'open', articleId: id })}
-              title="Update category"
-            >
-              <PenIcon className="h-3 w-3" />
-            </button>
-            <button
-              className="inline-flex items-center rounded-lg bg-red-500 p-2 text-sm text-gray-300 hover:bg-red-600"
-              onClick={() => handleDelete(id)}
-              disabled={loading}
-              title="Delete category"
-            >
-              <TrashIcon className="h-3 w-3" />
-            </button>
-          </div>
+        dataIndex: MANAGEMENT,
+        render: ({
+          id,
+          slug,
+          isHidden,
+          isHighlighted,
+        }: {
+          id: string
+          slug: string
+          isHidden: boolean
+          isHighlighted: boolean
+        }) => (
+          <OptionsCell
+            actions={[
+              {
+                text: 'Edit',
+                Icon: PenIcon,
+                handleClick: () => setFormDialog({ state: 'open', articleId: id }),
+              },
+              ...(isHighlighted
+                ? [
+                    {
+                      text: 'Remove highlight',
+                      Icon: EmptyStarIcon,
+                      handleClick: () => handleUpdate(id, { isHighlighted: false }),
+                      disabled: updateArticleLoading,
+                    },
+                  ]
+                : [
+                    {
+                      text: 'Highlight',
+                      Icon: StarIcon,
+                      handleClick: () => handleUpdate(id, { isHighlighted: true }),
+                      disabled: updateArticleLoading,
+                    },
+                  ]),
+              ...(isHidden
+                ? [
+                    {
+                      text: 'Display',
+                      Icon: EyeIcon,
+                      handleClick: () => handleUpdate(id, { isHidden: false }),
+                      disabled: updateArticleLoading,
+                    },
+                  ]
+                : [
+                    {
+                      text: 'Hide',
+                      Icon: EyeSlashIcon,
+                      handleClick: () => handleUpdate(id, { isHidden: true, isHighlighted: false }),
+                      disabled: updateArticleLoading,
+                    },
+                  ]),
+              ...(isHidden
+                ? []
+                : [
+                    {
+                      text: 'View article',
+                      Icon: GlobeIcon,
+                      handleClick: () => handleGoToPage(slug),
+                    },
+                  ]),
+              {
+                text: 'Delete',
+                Icon: TrashIcon,
+                handleClick: () => handleDelete(id),
+                disabled: deleteArticleLoading,
+              },
+            ]}
+          />
         ),
       },
     ],

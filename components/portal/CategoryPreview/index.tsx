@@ -1,16 +1,16 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import Image from 'next/image'
 import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 
 import { IMAGES_URL } from '@/consts'
-import { CategoryWithArticlesFragment } from '@/gql/graphql'
+import { PublicCategoryWithArticlesFragment } from '@/gql/graphql'
 
 import { SectionHeader } from '../SectionHeader'
+import { ImageWithFallback } from "../ImageWithFallback"
 
 interface ICategoryPreview {
-  category: CategoryWithArticlesFragment
+  category: PublicCategoryWithArticlesFragment
 }
 
 export const CategoryPreview = ({ category }: ICategoryPreview) => {
@@ -25,7 +25,7 @@ export const CategoryPreview = ({ category }: ICategoryPreview) => {
         <div className="col-span-2 row-span-2">
           <Link href={`article/${mainArticle?.slug}`}>
             <div className="relative aspect-[16/8] overflow-hidden">
-              <Image
+              <ImageWithFallback
                 className="absolute left-0 top-0 h-full w-full object-cover duration-200 ease-in-out hover:scale-[1.01] hover:opacity-[.95]"
                 width={600}
                 height={250}
@@ -49,7 +49,7 @@ export const CategoryPreview = ({ category }: ICategoryPreview) => {
           <div key={article.id} className={twMerge('flex flex-col', idx === 0 && 'row-span-2')}>
             <Link href={`/article/${article.slug}`}>
               <div className="relative aspect-[16/9] overflow-hidden duration-200 ease-in-out hover:opacity-90">
-                <Image
+                <ImageWithFallback
                   className="absolute left-0 top-0 h-full w-full object-cover duration-200 ease-in-out hover:scale-[1.01] hover:opacity-[.95]"
                   width={480}
                   height={200}

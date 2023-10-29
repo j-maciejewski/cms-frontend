@@ -8,13 +8,13 @@ import {
 import { getClient } from '@/lib/client'
 import { publicQueries } from '@/services'
 
-interface IFetchArticles {
+interface IFetchPublicArticles {
   page?: number
   filter: ArticlesGridInputFilter
 }
 
-export const fetchArticles = async ({ page = 1, filter }: IFetchArticles) => {
-  const articlesResponse = await getClient().query<
+export const fetchPublicArticles = async ({ page = 1, filter }: IFetchPublicArticles) => {
+  const publicArticlesResponse = await getClient().query<
     PublicArticlesByCategoryQuery,
     PublicArticlesByCategoryQueryVariables
   >({
@@ -28,5 +28,5 @@ export const fetchArticles = async ({ page = 1, filter }: IFetchArticles) => {
     },
   })
 
-  return articlesResponse
+  return publicArticlesResponse
 }

@@ -8,3 +8,10 @@ export enum DASHBOARD_ROUTES {
   INBOX = HOME + '/inbox',
   SETTINGS = HOME + '/settings',
 }
+
+export enum PORTAL_ROUTES {
+  HOME = '/',
+  ARTICLE = '/article',
+  CATEGORY = '/category',
+  CONTACT = '/contact',
+}

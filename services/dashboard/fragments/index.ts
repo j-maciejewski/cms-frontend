@@ -1,6 +1,7 @@
 export { ARTICLE_FRAGMENT } from './article'
 export { ARTICLE_IN_LIST_FRAGMENT } from './articleInList'
 export { CATEGORY_FRAGMENT } from './category'
+export { CATEGORY_IN_LIST_FRAGMENT } from './categoryInList'
 export { BASIC_CATEGORY_FRAGMENT } from './basicCategory'
 export { USER_FRAGMENT } from './user'
 export { MESSAGE_FRAGMENT } from './message'

@@ -37,7 +37,7 @@ export const ItemsPerPageSelect = ({ options }: { options: number[] }) => {
           !isSelectorOpen && 'hidden',
         )}
       >
-        <ul className="py-2 text-sm dark:text-gray-200" aria-labelledby="states-button">
+        <ul className="py-2 text-sm dark:text-gray-200">
           {options.map((value, idx) => (
             <li key={idx}>
               <button

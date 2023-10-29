@@ -1,19 +1,53 @@
 import { useMemo } from 'react'
+import { toast } from 'react-toastify'
 
 import { useCategories } from '@/app/(dashboard)/dashboard/categories/CategoriesProvider'
-import { PenIcon, TrashIcon } from '@/components/icons'
-import { DashboardCategoriesQuery } from '@/gql/graphql'
+import { EyeIcon, EyeSlashIcon, GlobeIcon, PenIcon, TrashIcon } from '@/components/icons'
+import { defaultNotifyOptions } from '@/consts'
+import { DashboardCategoriesQuery, UpdateCategoryInput } from '@/gql/graphql'
 import { dashboardQueries } from '@/services'
 
+import { BooleanCell, OptionsCell } from '../Table/components'
 import { ITableColumn } from '../Table/types'
 import { CategoriesTableHeadersKeys } from './consts'
 
 export const useColumns = (): ITableColumn[] => {
-  const { ID, NAME, ARTICLES_COUNT } = CategoriesTableHeadersKeys
+  const { ID, NAME, IS_HIDDEN, ARTICLES_COUNT, MANAGEMENT } = CategoriesTableHeadersKeys
   const {
+    refetchCategories,
     setFormDialog,
-    deleteCategoryTuple: [deleteCategory, { loading }],
+    updateCategoryTuple: [updateCategory, { loading: updateCategoryLoading }],
+    deleteCategoryTuple: [deleteCategory, { loading: deleteCategoryLoading }],
   } = useCategories()
+
+  const handleUpdate = (id: string, input: UpdateCategoryInput) => {
+    const notificationId = toast.loading('Updaing article...', defaultNotifyOptions)
+
+    updateCategory({
+      variables: {
+        id,
+        updateCategoryInput: input,
+      },
+      update: (cache, { data }) => {
+        if (!data?.updateCategory) return
+
+        refetchCategories()
+        toast.update(notificationId, {
+          render: 'Category has been updated',
+          type: 'success',
+          isLoading: false,
+          ...defaultNotifyOptions,
+        })
+      },
+    }).catch(() =>
+      toast.update(notificationId, {
+        render: 'There was an error while updating category',
+        type: 'error',
+        isLoading: false,
+        ...defaultNotifyOptions,
+      }),
+    )
+  }
 
   const handleDelete = (id: string) => {
     if (!window.confirm('Confirm deleting category')) return
@@ -38,6 +72,10 @@ export const useColumns = (): ITableColumn[] => {
     })
   }
 
+  const handleGoToPage = (slug: string) => {
+    window.open('http://localhost:3000/category/' + slug, '_blank')
+  }
+
   const columns = useMemo(
     () => [
       {
@@ -54,26 +92,66 @@ export const useColumns = (): ITableColumn[] => {
         key: ARTICLES_COUNT,
       },
       {
+        title: 'Is hidden',
+        dataIndex: IS_HIDDEN,
+        key: IS_HIDDEN,
+        render: BooleanCell,
+      },
+      {
         key: 'MANAGEMENT',
-        dataIndex: ID,
-        render: (id: string) => (
-          <div className="flex w-min gap-2">
-            <button
-              className="inline-flex items-center rounded-lg bg-blue-500 p-2 text-sm text-gray-300 hover:bg-blue-600"
-              onClick={() => setFormDialog({ state: 'open', categoryId: id })}
-              title="Update category"
-            >
-              <PenIcon className="h-3 w-3" />
-            </button>
-            <button
-              className="inline-flex items-center rounded-lg bg-red-500 p-2 text-sm text-gray-300 hover:bg-red-600"
-              onClick={() => handleDelete(id)}
-              disabled={loading}
-              title="Delete category"
-            >
-              <TrashIcon className="h-3 w-3" />
-            </button>
-          </div>
+        dataIndex: MANAGEMENT,
+        render: ({
+          id,
+          slug,
+          isHidden,
+          articlesCount,
+        }: {
+          id: string
+          slug: string
+          isHidden: boolean
+          articlesCount: number
+        }) => (
+          <OptionsCell
+            actions={[
+              {
+                text: 'Edit',
+                Icon: PenIcon,
+                handleClick: () => setFormDialog({ state: 'open', categoryId: id }),
+              },
+              ...(isHidden
+                ? [
+                    {
+                      text: 'Display',
+                      Icon: EyeIcon,
+                      handleClick: () => handleUpdate(id, { isHidden: false }),
+                      disabled: updateCategoryLoading,
+                    },
+                  ]
+                : [
+                    {
+                      text: 'Hide',
+                      Icon: EyeSlashIcon,
+                      handleClick: () => handleUpdate(id, { isHidden: true }),
+                      disabled: updateCategoryLoading,
+                    },
+                  ]),
+              ...(isHidden || articlesCount === 0
+                ? []
+                : [
+                    {
+                      text: 'Browse category',
+                      Icon: GlobeIcon,
+                      handleClick: () => handleGoToPage(slug),
+                    },
+                  ]),
+              {
+                text: 'Delete',
+                Icon: TrashIcon,
+                handleClick: () => handleDelete(id),
+                disabled: deleteCategoryLoading,
+              },
+            ]}
+          />
         ),
       },
     ],

@@ -8,7 +8,10 @@ export const Main = ({ children }: { children: ReactNode }) => {
 
   return (
     <main
-      className={twMerge('flex w-full flex-col bg-gray-100 p-10 dark:bg-gray-600', isSidebarOpen ? 'ml-64' : 'ml-16')}
+      className={twMerge(
+        'flex w-full flex-col overflow-auto bg-gray-100 p-10 dark:bg-gray-600',
+        isSidebarOpen ? 'ml-64' : 'ml-16',
+      )}
       style={{ transition: 'margin-left .1s ease-in-out', maxWidth: '-webkit-fill-available' }}
     >
       {children}

@@ -1,4 +1,4 @@
-import { fetchArticles } from '@/actions'
+import { fetchPublicArticles } from '@/actions'
 import { ArticlesGroupHeader, InfiniteScrollArticles, PageWrapper } from '@/components/portal'
 import { ArticlesGridInputFilter } from '@/gql/graphql'
 
@@ -9,7 +9,7 @@ export default async function ({ searchParams }: { searchParams?: { [key: string
     fullText: searchQuery,
   }
 
-  const { data: articlesData, error: articlesError } = await fetchArticles({ filter })
+  const { data: articlesData, error: articlesError } = await fetchPublicArticles({ filter })
 
   if (articlesError) {
     return <>{JSON.stringify(articlesError)}</>

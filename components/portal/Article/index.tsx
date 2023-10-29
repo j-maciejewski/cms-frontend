@@ -1,14 +1,14 @@
 import Link from 'next/link'
 
 import { IMAGES_URL } from '@/consts'
-import { ArticleFragment } from '@/gql/graphql'
+import { PublicArticleFragment } from '@/gql/graphql'
 import { formatDate } from '@/utils'
 
 import { ImageWithFallback } from '../ImageWithFallback'
 import { ShareButton } from '../ShareButton'
 
 interface IArticle {
-  article: ArticleFragment
+  article: PublicArticleFragment
 }
 
 export const Article = ({ article }: IArticle) => {
@@ -35,6 +35,7 @@ export const Article = ({ article }: IArticle) => {
           height={250}
           alt={article?.title}
           src={`${IMAGES_URL}/${article.leadImage}`}
+          priority
         />
       </div>
       <div>

@@ -24,7 +24,7 @@ export const ArticlesGroupHeader = (props: IArticlesGroupHeader) => {
   return (
     <div className="mb-6 flex justify-between">
       <h6 className="border-l-4 border-primary pl-4 text-lg font-medium tracking-wider">{label}</h6>
-      {props.hideDisplayModeButtons && <DisplayModeButtons />}
+      {!props.hideDisplayModeButtons && <DisplayModeButtons />}
     </div>
   )
 }

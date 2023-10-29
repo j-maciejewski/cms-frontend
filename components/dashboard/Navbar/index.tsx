@@ -5,7 +5,7 @@ import { BarsIcon } from '@/components/icons'
 import { useSidebar } from '@/context/dashboard'
 
 import { ToggleThemeButton } from '../ToggleThemeButton'
-import { UserNavDropdown } from '../UserNavDropdown'
+import { UserNavDropdown } from './components'
 
 export const Navbar = () => {
   const { toggleSidebar } = useSidebar()

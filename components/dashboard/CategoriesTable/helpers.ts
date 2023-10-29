@@ -1,14 +1,23 @@
-import { DashboardCategoryFragment } from '@/gql/graphql'
+import { DashboardCategoryInListFragment } from '@/gql/graphql'
 
 import { CategoriesTableHeadersKeys } from './consts'
 
-export const dataRows = (categories: DashboardCategoryFragment[]): Partial<Record<CategoriesTableHeadersKeys, any>>[] =>
+export const dataRows = (
+  categories: DashboardCategoryInListFragment[],
+): Partial<Record<CategoriesTableHeadersKeys, any>>[] =>
   categories.map((dataRow) => {
-    const { id, name, articlesCount } = dataRow
+    const { id, name, slug, isHidden, articlesCount } = dataRow
 
     return {
-      id: id,
-      name: name,
-      articlesCount: articlesCount,
+      id,
+      name,
+      isHidden,
+      articlesCount,
+      management: {
+        id,
+        slug,
+        isHidden,
+        articlesCount,
+      },
     }
   })

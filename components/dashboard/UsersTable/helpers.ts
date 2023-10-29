@@ -14,5 +14,10 @@ export const dataRows = (users: DashboardUserFragment[]): Partial<Record<UsersTa
       role,
       isSuspended,
       isAnonymous,
+      management: {
+        id,
+        isAnonymous,
+        isSuspended,
+      },
     } as Partial<Record<UsersTableHeadersKeys, any>>
   })

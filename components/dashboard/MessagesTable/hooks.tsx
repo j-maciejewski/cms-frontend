@@ -1,22 +1,13 @@
-import { useQuery } from '@apollo/client'
-import Link from 'next/link'
 import { useMemo } from 'react'
 
-import { useArticles } from '@/app/(dashboard)/dashboard/articles/ArticlesProvider'
-import { PenIcon, ReplyIcon, TrashIcon } from '@/components/icons'
-import { DASHBOARD_ROUTES } from '@/consts/routes'
-import { useGrid } from '@/context/dashboard/GridProvider'
-import { DashboardArticlesQuery, DashboardCategoriesQuery, DashboardCategoriesQueryVariables } from '@/gql/graphql'
-import { dashboardQueries } from '@/services'
-import { FilterOperators, FilterTypes } from '@/utils'
+import { ReplyIcon, TrashIcon } from '@/components/icons'
 
+import { OptionsCell } from '../Table/components'
 import { ITableColumn, ITableFilter } from '../Table/types'
 import { MessagesTableHeadersKeys } from './consts'
 
 export const useColumns = () => {
-  const { ID, NAME, EMAIL, CONTENT } = MessagesTableHeadersKeys
-
-  //   text-wrap: balance;
+  const { ID, NAME, EMAIL, CONTENT, MANAGEMENT } = MessagesTableHeadersKeys
 
   const columns: ITableColumn[] = useMemo(
     () => [
@@ -54,25 +45,22 @@ export const useColumns = () => {
       },
       {
         key: 'MANAGEMENT',
-        dataIndex: ID,
-        render: (id: string) => (
-          <div className="flex w-min gap-2">
-            <button
-              className="inline-flex items-center rounded-lg bg-blue-500 p-2 text-sm text-gray-300 hover:bg-blue-600"
-              // onClick={() => setFormDialog({ state: 'open', articleId: id })}
-              title="Reply to message"
-            >
-              <ReplyIcon className="h-3 w-3" />
-            </button>
-            <button
-              className="inline-flex items-center rounded-lg bg-red-500 p-2 text-sm text-gray-300 hover:bg-red-600"
-              // onClick={() => handleDelete(id)}
-              // disabled={loading}
-              title="Delete message"
-            >
-              <TrashIcon className="h-3 w-3" />
-            </button>
-          </div>
+        dataIndex: MANAGEMENT,
+        render: ({ id }: { id: string }) => (
+          <OptionsCell
+            actions={[
+              {
+                text: 'Reply',
+                Icon: ReplyIcon,
+                handleClick: () => {},
+              },
+              {
+                text: 'Delete',
+                Icon: TrashIcon,
+                handleClick: () => {},
+              },
+            ]}
+          />
         ),
       },
     ],

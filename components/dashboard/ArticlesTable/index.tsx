@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react'
 import { useArticles } from '@/app/(dashboard)/dashboard/articles/ArticlesProvider'
 import { PlusIcon } from '@/components/icons'
 
+import { Dialog } from '../Dialog'
 import { Pagination } from '../Pagination'
 import { Table } from '../Table'
 import { ArticleForm } from './components/ArticleForm'
@@ -26,7 +27,6 @@ export const ArticlesTable = () => {
   const filters = useFilters()
 
   const [columns, setColumns] = useState(useColumns())
-
   const rows = useMemo(() => (articles ? dataRows(articles) : []), [articles])
 
   return (
@@ -49,9 +49,7 @@ export const ArticlesTable = () => {
       />
       <Pagination options={[10, 20, 50]} />
 
-      <dialog ref={formDialogRef} className="rounded-lg">
-        {formDialog.state === 'open' && <ArticleForm />}
-      </dialog>
+      <Dialog ref={formDialogRef}>{formDialog.state === 'open' && <ArticleForm />}</Dialog>
     </>
   )
 }
